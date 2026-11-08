@@ -1,0 +1,10 @@
+.header {
+  display: flex;
+  width: min(100% - 2 * var(--page-gutter), var(--content-max-width));
+  margin-inline: auto;
+  padding-top: 39px;
+}
+
+.header__logo {
+  display: block;
+}
