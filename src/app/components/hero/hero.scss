@@ -115,6 +115,16 @@
   zoom: calc(250 / 420);
 }
 
+.hero__scene {
+  position: absolute;
+  inset: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+
+.hero__scene--active {
+  opacity: 0;
+}
+
 .hero__badge,
 .hero__phone,
 .hero__bubble {
@@ -134,6 +144,38 @@
 .hero__bubble {
   top: 97px;
   left: 76px;
+}
+
+.hero__badge--active {
+  top: 255px;
+  left: 326px;
+}
+
+.hero__bubble--active {
+  top: 45.4px;
+  left: 14px;
+  width: 177.3px;
+  height: 128.4px;
+}
+
+@media (hover: hover) {
+  .hero__visual:hover .hero__scene--rest {
+    opacity: 0;
+  }
+
+  .hero__visual:hover .hero__scene--active {
+    opacity: 1;
+  }
+}
+
+@media (hover: none) {
+  .hero__scene--rest {
+    opacity: 0;
+  }
+
+  .hero__scene--active {
+    opacity: 1;
+  }
 }
 
 @media (min-width: 1024px) {
