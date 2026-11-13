@@ -12,7 +12,9 @@ export class Surveys implements OnDestroy {
   private readonly supabase = createClient(environment.supabaseUrl, environment.supabaseKey);
   private readonly channel = this.supabase.channel(SURVEYS_CHANNEL);
   private readonly surveyList = signal<Survey[]>([]);
+  private readonly loadFinished = signal(false);
   readonly surveys = this.surveyList.asReadonly();
+  readonly hasLoaded = this.loadFinished.asReadonly();
   readonly activeSurveys = computed(() =>
     this.surveyList().filter((survey) => !hasEnded(survey.end_date)),
   );
@@ -38,6 +40,7 @@ export class Surveys implements OnDestroy {
       .select('*')
       .order('created_at', { ascending: false });
     this.surveyList.set((data ?? []) as Survey[]);
+    this.loadFinished.set(true);
   }
   /** Keeps the list in step with surveys that are created or changed in the database. */
   private listenForChanges(): void {

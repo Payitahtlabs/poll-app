@@ -22,6 +22,9 @@ export class SurveyList {
     const category = this.selectedCategory();
     return this.tabSurveys().filter((survey) => category === null || survey.category === category);
   });
+  readonly isEmpty = computed(
+    () => this.surveysService.hasLoaded() && this.visibleSurveys().length === 0,
+  );
 
   /** Switches the list to the surveys that are still running. */
   showActive(): void {

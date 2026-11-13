@@ -27,7 +27,8 @@
   <ul class="survey-list__items" role="list">
     @for (survey of visibleSurveys(); track survey.id) {
       <li class="survey-list__item"><app-survey-card [survey]="survey" /></li>
-    } @empty {
+    }
+    @if (isEmpty()) {
       <li class="survey-list__empty">There are no surveys here yet.</li>
     }
   </ul>
