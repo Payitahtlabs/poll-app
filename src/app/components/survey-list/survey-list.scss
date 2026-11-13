@@ -2,6 +2,11 @@
   --survey-list-max-width: 1042px;
   --survey-card-min-width: 343px;
   --survey-list-title-longest-line: 5.4;
+  --survey-list-gap: 16px;
+  --survey-list-visible-rows: 3;
+  --survey-card-height: 130px;
+  --survey-list-scrollbar-width: 8px;
+  --survey-list-scrollbar-gap: 15px;
 
   width: min(100% - 2 * var(--page-gutter), var(--survey-list-max-width));
   margin-inline: auto;
@@ -62,7 +67,7 @@
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--survey-card-min-width)), 1fr));
   align-content: start;
-  gap: 16px;
+  gap: var(--survey-list-gap);
   min-height: 100svh;
   margin: 0;
   padding: 0;
@@ -85,5 +90,40 @@
 
   .survey-list__filters {
     margin-bottom: 33px;
+  }
+
+  .survey-list__items {
+    --survey-list-scroll-space: calc(
+      var(--survey-list-scrollbar-gap) + var(--survey-list-scrollbar-width)
+    );
+
+    height: calc(
+      var(--survey-list-visible-rows) * var(--survey-card-height) +
+        (var(--survey-list-visible-rows) - 1) * var(--survey-list-gap)
+    );
+    min-height: 0;
+    margin-right: max(
+      calc(-1 * var(--survey-list-scroll-space)),
+      calc((100% - 100vw) / 2 + var(--page-gutter))
+    );
+    padding-right: var(--survey-list-scrollbar-gap);
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+  }
+
+  .survey-list__items::-webkit-scrollbar {
+    width: var(--survey-list-scrollbar-width);
+  }
+
+  .survey-list__items::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background-color: var(--color-primary-orange);
+  }
+
+  @supports not selector(::-webkit-scrollbar) {
+    .survey-list__items {
+      scrollbar-color: var(--color-primary-orange) transparent;
+      scrollbar-width: thin;
+    }
   }
 }
