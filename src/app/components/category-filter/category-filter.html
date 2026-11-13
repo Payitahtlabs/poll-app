@@ -1,0 +1,31 @@
+<button
+  class="category-filter__head"
+  type="button"
+  [class.category-filter__head--highlighted]="isHighlighted()"
+  [attr.aria-expanded]="isOpen()"
+  (click)="toggleMenu()"
+>
+  Sort by categories
+  <svg class="category-filter__arrow" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+    <path d="M7 10l5 5 5-5z" />
+  </svg>
+</button>
+@if (isOpen()) {
+  <ul class="category-filter__menu" role="list">
+    <li>
+      <button class="category-filter__option" type="button" (click)="selectCategory(null)">
+        All Surveys
+      </button>
+    </li>
+    @for (category of categories; track category) {
+      <li>
+        <button class="category-filter__option" type="button" (click)="selectCategory(category)">
+          {{ category }}
+        </button>
+      </li>
+    }
+  </ul>
+}
+@if (selected(); as category) {
+  <p class="category-filter__chosen">{{ category }}</p>
+}

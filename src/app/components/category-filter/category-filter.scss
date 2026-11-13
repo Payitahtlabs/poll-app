@@ -1,0 +1,99 @@
+:host {
+  --category-filter-width: 206px;
+
+  position: relative;
+  display: block;
+  width: var(--category-filter-width);
+}
+
+.category-filter__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 4px 6px 4px 10px;
+  border: 0;
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--color-white);
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.3s ease-out;
+}
+
+.category-filter__head--highlighted {
+  background-color: var(--color-dropdown-head);
+}
+
+.category-filter__arrow {
+  fill: currentColor;
+  transition: color 0.3s ease-out;
+}
+
+.category-filter__head--highlighted .category-filter__arrow {
+  color: var(--color-primary-orange);
+}
+
+.category-filter__head[aria-expanded='true'] .category-filter__arrow {
+  rotate: 180deg;
+}
+
+@media (hover: hover) {
+  .category-filter__head:hover {
+    background-color: var(--color-dropdown-head);
+  }
+
+  .category-filter__head:hover .category-filter__arrow {
+    color: var(--color-primary-orange);
+  }
+}
+
+.category-filter__menu {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  width: 100%;
+  margin: 4px 0 0;
+  padding: 8px 4px;
+  border-radius: 6px;
+  background-color: var(--color-white);
+  list-style: none;
+}
+
+.category-filter__option {
+  padding: 4px;
+  border: 0;
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--color-primary-purple);
+  font-family: var(--font-body);
+  font-size: 14px;
+  font-weight: 400;
+  cursor: pointer;
+  transition: background-color 0.3s ease-out;
+}
+
+@media (hover: hover) {
+  .category-filter__option:hover {
+    background-color: var(--color-menu-hover);
+  }
+}
+
+.category-filter__chosen {
+  margin: 4px 0 0;
+  padding: 4px 4px 4px 10px;
+  color: var(--color-primary-orange);
+  font-size: 14px;
+}
+
+@media (min-width: 1024px) {
+  .category-filter__chosen {
+    position: absolute;
+  }
+}

@@ -20,11 +20,19 @@
   color: var(--color-primary-orange);
 }
 
+.survey-list__filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 48px 24px;
+  margin-bottom: 24px;
+}
+
 .survey-list__tabs {
   display: flex;
   flex-wrap: wrap;
   gap: clamp(16px, 16px + 8 * (100vw - 375px) / 1065, 24px);
-  margin-bottom: 40px;
 }
 
 .survey-list__tab {
@@ -59,7 +67,9 @@
 .survey-list__items {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, var(--survey-card-min-width)), 1fr));
+  align-content: start;
   gap: 16px;
+  min-height: 100svh;
   margin: 0;
   padding: 0;
   list-style: none;
@@ -77,5 +87,9 @@
 
   .survey-list__title {
     margin-bottom: 56px;
+  }
+
+  .survey-list__filters {
+    margin-bottom: 33px;
   }
 }

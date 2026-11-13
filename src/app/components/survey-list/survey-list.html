@@ -1,22 +1,28 @@
 <section class="survey-list">
   <h2 class="survey-list__title">Your surveys</h2>
-  <div class="survey-list__tabs">
-    <button
-      class="survey-list__tab"
-      type="button"
-      [attr.aria-pressed]="isShowingActive()"
-      (click)="showActive()"
-    >
-      Active survey
-    </button>
-    <button
-      class="survey-list__tab"
-      type="button"
-      [attr.aria-pressed]="isShowingPast()"
-      (click)="showPast()"
-    >
-      Past survey
-    </button>
+  <div class="survey-list__filters">
+    <div class="survey-list__tabs">
+      <button
+        class="survey-list__tab"
+        type="button"
+        [attr.aria-pressed]="isShowingActive()"
+        (click)="showActive()"
+      >
+        Active survey
+      </button>
+      <button
+        class="survey-list__tab"
+        type="button"
+        [attr.aria-pressed]="isShowingPast()"
+        (click)="showPast()"
+      >
+        Past survey
+      </button>
+    </div>
+    <app-category-filter
+      [selected]="selectedCategory()"
+      (categorySelected)="selectCategory($event)"
+    />
   </div>
   <ul class="survey-list__items" role="list">
     @for (survey of visibleSurveys(); track survey.id) {
