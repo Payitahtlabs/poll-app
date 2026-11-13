@@ -31,7 +31,18 @@
 }
 
 .survey-card__title {
-  margin: 0;
+  margin: 0 0 24px;
   font-size: clamp(20px, 20px + 4 * (100vw - 375px) / 1065, 24px);
   font-weight: 700;
+}
+
+.survey-card__deadline {
+  align-self: flex-end;
+  margin: auto 0 0;
+  padding: 3px 6px;
+  border-radius: 0 14px 0 0;
+  background-color: var(--color-secondary-orange);
+  color: var(--color-ink);
+  font-size: 14px;
+  font-weight: 500;
 }
