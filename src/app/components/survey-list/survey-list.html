@@ -1,8 +1,28 @@
 <section class="survey-list">
   <h2 class="survey-list__title">Your surveys</h2>
+  <div class="survey-list__tabs">
+    <button
+      class="survey-list__tab"
+      type="button"
+      [attr.aria-pressed]="isShowingActive()"
+      (click)="showActive()"
+    >
+      Active survey
+    </button>
+    <button
+      class="survey-list__tab"
+      type="button"
+      [attr.aria-pressed]="isShowingPast()"
+      (click)="showPast()"
+    >
+      Past survey
+    </button>
+  </div>
   <ul class="survey-list__items" role="list">
-    @for (survey of surveys(); track survey.id) {
+    @for (survey of visibleSurveys(); track survey.id) {
       <li class="survey-list__item"><app-survey-card [survey]="survey" /></li>
+    } @empty {
+      <li class="survey-list__empty">There are no surveys here yet.</li>
     }
   </ul>
 </section>

@@ -3,7 +3,7 @@ const ISO_DATE_LOCALE = 'en-CA';
 const MILLISECONDS_PER_DAY = 86_400_000;
 
 /**
- * Returns today's date as it is in Germany, the same day the database uses.
+ * Returns today's date as it is in Germany.
  * @returns Today's date in the form "YYYY-MM-DD".
  */
 export function getTodayInGermany(): string {
@@ -18,6 +18,15 @@ export function getTodayInGermany(): string {
 export function getDaysUntil(isoDate: string): number {
   const difference = Date.parse(isoDate) - Date.parse(getTodayInGermany());
   return Math.round(difference / MILLISECONDS_PER_DAY);
+}
+
+/**
+ * Tells whether a survey has ended; on its end date it still counts as running.
+ * @param endDate - The end date in the form "YYYY-MM-DD", or null when the survey never ends.
+ * @returns True once the end date lies before today.
+ */
+export function hasEnded(endDate: string | null): boolean {
+  return endDate !== null && getDaysUntil(endDate) < 0;
 }
 
 /**
