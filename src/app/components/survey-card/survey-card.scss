@@ -1,0 +1,37 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.survey-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 12px clamp(16px, 16px + 4 * (100vw - 375px) / 1065, 20px);
+  border-radius: 5px 50px 5px 5px;
+  background-color: var(--color-card-list);
+  transition: background-color 0.3s ease-out;
+}
+
+.survey-card:active {
+  background-color: var(--color-card-list-hover);
+}
+
+@media (hover: hover) {
+  .survey-card:hover {
+    background-color: var(--color-card-list-hover);
+  }
+}
+
+.survey-card__category {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-secondary-orange);
+}
+
+.survey-card__title {
+  margin: 0;
+  font-size: clamp(20px, 20px + 4 * (100vw - 375px) / 1065, 24px);
+  font-weight: 700;
+}

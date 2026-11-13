@@ -1,0 +1,8 @@
+<section class="survey-list">
+  <h2 class="survey-list__title">Your surveys</h2>
+  <ul class="survey-list__items" role="list">
+    @for (survey of surveys(); track survey.id) {
+      <li class="survey-list__item"><app-survey-card [survey]="survey" /></li>
+    }
+  </ul>
+</section>
