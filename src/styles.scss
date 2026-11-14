@@ -31,6 +31,14 @@
 }
 
 @font-face {
+  font-family: 'Mulish';
+  src: url('./assets/fonts/mulish-latin-800-normal.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
   font-family: 'Nokora';
   src: url('./assets/fonts/nokora-latin-400-normal.woff2') format('woff2');
   font-weight: 400;
