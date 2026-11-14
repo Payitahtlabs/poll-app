@@ -67,6 +67,9 @@
   --color-dropdown-head: rgb(217 217 217 / 12%);
   --color-menu-hover: #f4e9fb;
   --color-white: #ffffff;
+  --color-title-orange: #ee9236;
+  --color-bg-survey: rgb(142 112 153 / 10%);
+  --color-complete-soft: rgb(255 183 112 / 30%);
   --font-display: 'Nerko One', cursive;
   --font-body: 'Mulish', sans-serif;
   --font-button: 'Nokora', sans-serif;
@@ -85,4 +88,8 @@ body {
   background-color: var(--color-primary-purple);
   color: var(--color-white);
   font-family: var(--font-body);
+}
+
+body:has(app-survey-detail) {
+  background-color: var(--color-white);
 }

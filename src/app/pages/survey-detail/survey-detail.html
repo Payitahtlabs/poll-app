@@ -1,17 +1,44 @@
-<section class="survey-detail">
-  @if (survey(); as survey) {
-    <h1 class="survey-detail__title">{{ survey.title }}</h1>
-    @for (question of questions(); track question.id) {
-      <h2>{{ question.text }}</h2>
-      <ul role="list">
-        @for (option of question.answer_options; track option.id) {
-          <li>{{ option.text }}: {{ option.votes }}</li>
+@if (survey(); as survey) {
+  <div class="survey-detail">
+    <article class="survey-detail__survey">
+      <div class="survey-detail__status">
+        @if (isRunning()) {
+          <p class="survey-detail__badge">Published</p>
         }
-      </ul>
-    }
-  }
-  @if (isNotFound()) {
-    <p>Survey not found.</p>
-    <a routerLink="/">Back to all surveys</a>
-  }
-</section>
+        <a class="survey-detail__close" routerLink="/" aria-label="Back to all surveys">
+          <img src="./assets/images/close.svg" alt="" width="24" height="24" />
+        </a>
+      </div>
+      <p class="survey-detail__meta">
+        <span>{{ survey.end_date | deadlineDate }}</span>
+        <span class="survey-detail__category">Category: {{ survey.category }}</span>
+      </p>
+      <h1 class="survey-detail__title">{{ survey.title }}</h1>
+      @if (survey.description; as description) {
+        <p class="survey-detail__description">{{ description }}</p>
+      }
+      <ol class="survey-detail__questions" role="list">
+        @for (question of questions(); track question.id) {
+          <li><app-survey-question [question]="question" /></li>
+        }
+      </ol>
+      <button class="survey-detail__complete" type="button">
+        <span class="survey-detail__complete-label">Complete</span>
+        <span class="survey-detail__complete-label survey-detail__complete-label--wide">
+          Complete survey
+        </span>
+        <img
+          class="survey-detail__complete-icon"
+          src="./assets/images/check.svg"
+          alt=""
+          width="18"
+          height="16"
+        />
+      </button>
+    </article>
+  </div>
+}
+@if (isNotFound()) {
+  <p class="survey-detail__not-found">Survey not found.</p>
+  <a routerLink="/">Back to all surveys</a>
+}

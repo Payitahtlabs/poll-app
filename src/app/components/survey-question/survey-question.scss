@@ -1,0 +1,60 @@
+:host {
+  --survey-question-marker: 27px;
+  display: block;
+  color: var(--color-primary-purple);
+}
+
+.survey-question__title {
+  display: grid;
+  grid-template-columns: var(--survey-question-marker) 1fr;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.survey-question__number {
+  justify-self: end;
+  padding-right: 8px;
+}
+
+.survey-question__hint {
+  margin: 3px 0 0;
+  padding-left: var(--survey-question-marker);
+  font-size: 14px;
+  font-weight: 400;
+}
+
+.survey-question__answers {
+  display: grid;
+  gap: 8px;
+  margin: 24px 0 0;
+  padding: 0 0 0 8px;
+  list-style: none;
+}
+
+.survey-question__answer {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 0 4px;
+  font-size: 16px;
+}
+
+.survey-question__box {
+  flex: none;
+  width: 15px;
+  height: 15px;
+  margin: 3px;
+  border: 1.5px solid currentColor;
+  border-radius: 3px;
+}
+
+.survey-question__label {
+  display: flex;
+  gap: 4px;
+}
+
+.survey-question__letter {
+  flex: none;
+  font-weight: 700;
+}

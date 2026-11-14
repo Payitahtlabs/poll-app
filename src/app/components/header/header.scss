@@ -14,3 +14,15 @@
 .header__logo {
   display: block;
 }
+
+.header__logo--dark {
+  display: none;
+}
+
+:host-context(body:has(app-survey-detail)) .header__logo--light {
+  display: none;
+}
+
+:host-context(body:has(app-survey-detail)) .header__logo--dark {
+  display: block;
+}
