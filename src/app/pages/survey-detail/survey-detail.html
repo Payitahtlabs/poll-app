@@ -1,0 +1,9 @@
+<section class="survey-detail">
+  @if (survey(); as survey) {
+    <h1 class="survey-detail__title">{{ survey.title }}</h1>
+  }
+  @if (isNotFound()) {
+    <p>Survey not found.</p>
+    <a routerLink="/">Back to all surveys</a>
+  }
+</section>

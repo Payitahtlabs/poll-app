@@ -1,9 +1,10 @@
 import { Component, input } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Survey } from '../../models/survey';
 import { DeadlineLabelPipe } from '../../pipes/deadline-label-pipe';
 
 @Component({
-  imports: [DeadlineLabelPipe],
+  imports: [DeadlineLabelPipe, RouterLink],
   selector: 'app-highlight-card',
   styleUrl: './highlight-card.scss',
   templateUrl: './highlight-card.html',

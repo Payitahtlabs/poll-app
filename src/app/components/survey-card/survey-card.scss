@@ -4,6 +4,7 @@
 }
 
 .survey-card {
+  position: relative;
   display: flex;
   flex-direction: column;
   height: 100%;
@@ -34,6 +35,27 @@
   margin: 0 0 24px;
   font-size: clamp(20px, 20px + 4 * (100vw - 375px) / 1065, 24px);
   font-weight: 700;
+}
+
+.survey-card__link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.survey-card__link::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+}
+
+.survey-card:has(.survey-card__link:focus-visible) {
+  outline: 2px solid var(--color-primary-orange);
+  outline-offset: -2px;
+}
+
+.survey-card__link:focus-visible {
+  outline: none;
 }
 
 .survey-card__deadline {

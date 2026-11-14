@@ -1,0 +1,9 @@
+:host {
+  display: block;
+}
+
+.survey-detail {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  padding: 48px var(--page-gutter) 100px;
+}
