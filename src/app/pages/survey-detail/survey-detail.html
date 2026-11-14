@@ -1,6 +1,14 @@
 <section class="survey-detail">
   @if (survey(); as survey) {
     <h1 class="survey-detail__title">{{ survey.title }}</h1>
+    @for (question of questions(); track question.id) {
+      <h2>{{ question.text }}</h2>
+      <ul role="list">
+        @for (option of question.answer_options; track option.id) {
+          <li>{{ option.text }}: {{ option.votes }}</li>
+        }
+      </ul>
+    }
   }
   @if (isNotFound()) {
     <p>Survey not found.</p>

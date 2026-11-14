@@ -1,6 +1,7 @@
 import { computed, Injectable, OnDestroy, signal } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { QuestionWithOptions } from '../models/question';
 import { Survey } from '../models/survey';
 import { compareDates, hasEnded } from '../utils/date';
 
@@ -14,8 +15,10 @@ export class Surveys implements OnDestroy {
   private readonly channel = this.supabase.channel(SURVEYS_CHANNEL);
   private readonly surveyList = signal<Survey[]>([]);
   private readonly loadFinished = signal(false);
+  private readonly questionList = signal<QuestionWithOptions[]>([]);
   readonly surveys = this.surveyList.asReadonly();
   readonly hasLoaded = this.loadFinished.asReadonly();
+  readonly questions = this.questionList.asReadonly();
   readonly activeSurveys = computed(() =>
     this.surveyList().filter((survey) => !hasEnded(survey.end_date)),
   );
@@ -38,6 +41,21 @@ export class Surveys implements OnDestroy {
   /** Stops listening for changes when the service is destroyed. */
   ngOnDestroy(): void {
     this.supabase.removeChannel(this.channel);
+  }
+
+  /**
+   * Loads the questions of one survey with their answer options, both in their set order.
+   * @param surveyId - The id of the survey that was opened.
+   */
+  async openSurvey(surveyId: number): Promise<void> {
+    this.questionList.set([]);
+    const { data } = await this.supabase
+      .from('questions')
+      .select('*, answer_options(*)')
+      .eq('survey_id', surveyId)
+      .order('position')
+      .order('position', { referencedTable: 'answer_options' });
+    this.questionList.set((data ?? []) as QuestionWithOptions[]);
   }
 
   /** Loads all surveys from the database, newest first. */
