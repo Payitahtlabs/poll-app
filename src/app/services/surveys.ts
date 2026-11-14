@@ -16,9 +16,11 @@ export class Surveys implements OnDestroy {
   private readonly surveyList = signal<Survey[]>([]);
   private readonly loadFinished = signal(false);
   private readonly questionList = signal<QuestionWithOptions[]>([]);
+  private readonly questionsLoadFinished = signal(false);
   readonly surveys = this.surveyList.asReadonly();
   readonly hasLoaded = this.loadFinished.asReadonly();
   readonly questions = this.questionList.asReadonly();
+  readonly hasLoadedQuestions = this.questionsLoadFinished.asReadonly();
   readonly activeSurveys = computed(() =>
     this.surveyList().filter((survey) => !hasEnded(survey.end_date)),
   );
@@ -49,6 +51,7 @@ export class Surveys implements OnDestroy {
    */
   async openSurvey(surveyId: number): Promise<void> {
     this.questionList.set([]);
+    this.questionsLoadFinished.set(false);
     const { data } = await this.supabase
       .from('questions')
       .select('*, answer_options(*)')
@@ -56,6 +59,7 @@ export class Surveys implements OnDestroy {
       .order('position')
       .order('position', { referencedTable: 'answer_options' });
     this.questionList.set((data ?? []) as QuestionWithOptions[]);
+    this.questionsLoadFinished.set(true);
   }
 
   /** Loads all surveys from the database, newest first. */

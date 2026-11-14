@@ -1,0 +1,49 @@
+<button
+  class="survey-results__toggle"
+  type="button"
+  aria-controls="survey-results-body"
+  [attr.aria-expanded]="isOpen()"
+  (click)="toggleResults()"
+>
+  {{ toggleLabel() }}
+  <svg class="survey-results__arrow" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+    <path d="M7 10l5 5 5-5z" />
+  </svg>
+</button>
+<div
+  id="survey-results-body"
+  class="survey-results__body"
+  [class.survey-results__body--open]="isOpen()"
+>
+  <h2 class="survey-results__title">
+    Survey results <span class="survey-results__live">LIVE</span>
+  </h2>
+  @if (hasVotes()) {
+    <ol class="survey-results__questions" role="list">
+      @for (question of results(); track question.id) {
+        <li>
+          <h3 class="survey-results__question">
+            <span class="survey-results__number">{{ question.position }}.</span>
+            <span>{{ question.text }}</span>
+          </h3>
+          <ul class="survey-results__answers" role="list">
+            @for (answer of question.answers; track answer.id) {
+              <li class="survey-results__answer">
+                <span class="survey-results__letter">{{ answer.position | answerLetter }}</span>
+                <span class="survey-results__track" aria-hidden="true">
+                  <span class="survey-results__bar" [style.width.%]="answer.share"></span>
+                </span>
+                <span class="survey-results__share">{{ answer.share }}%</span>
+              </li>
+            }
+          </ul>
+        </li>
+      }
+    </ol>
+  } @else {
+    <p class="survey-results__hint">
+      Results will be shown here after participants complete the survey.
+    </p>
+    <p class="survey-results__empty">There are no answers yet.</p>
+  }
+</div>

@@ -36,6 +36,9 @@
         />
       </button>
     </article>
+    @if (hasLoadedQuestions()) {
+      <app-survey-results [questions]="questions()" />
+    }
   </div>
 }
 @if (isNotFound()) {

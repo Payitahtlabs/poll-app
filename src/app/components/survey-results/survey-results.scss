@@ -1,0 +1,154 @@
+:host {
+  --survey-results-marker: 27px;
+  display: block;
+  padding-inline: 14px;
+  color: var(--color-primary-purple);
+}
+
+.survey-results__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px 4px 10px;
+  border: 0;
+  border-radius: 6px;
+  background-color: transparent;
+  color: inherit;
+  font-family: var(--font-body);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.3s ease-out;
+}
+
+.survey-results__arrow {
+  fill: currentColor;
+  transition: color 0.3s ease-out;
+}
+
+.survey-results__toggle[aria-expanded='true'] .survey-results__arrow {
+  rotate: 180deg;
+}
+
+.survey-results__body {
+  display: none;
+  margin-top: 24px;
+}
+
+.survey-results__body--open {
+  display: block;
+}
+
+.survey-results__title {
+  margin: 0;
+  color: var(--color-ink);
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 400;
+}
+
+.survey-results__live {
+  color: var(--color-primary-orange);
+}
+
+.survey-results__questions {
+  display: grid;
+  gap: 24px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.survey-results__question {
+  display: grid;
+  grid-template-columns: var(--survey-results-marker) 1fr;
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.survey-results__number {
+  justify-self: end;
+  padding-right: 8px;
+}
+
+.survey-results__answers {
+  display: grid;
+  row-gap: 12px;
+  margin: 16px 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.survey-results__answer {
+  display: grid;
+  grid-template-columns: 15px 1fr 36px;
+  align-items: center;
+  column-gap: 6px;
+}
+
+.survey-results__letter {
+  font-size: 14px;
+  font-weight: 700;
+}
+
+.survey-results__track {
+  height: 14px;
+  overflow: hidden;
+  border-radius: 0 20px 20px 0;
+  background-color: var(--color-bar-track);
+}
+
+.survey-results__bar {
+  display: block;
+  height: 100%;
+  border-radius: 0 20px 20px 0;
+  background-color: var(--color-primary-orange);
+}
+
+.survey-results__share {
+  color: var(--color-share);
+  font-size: 14px;
+  font-weight: 800;
+  text-align: right;
+}
+
+.survey-results__hint,
+.survey-results__empty {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.survey-results__hint {
+  margin: 24px 0 0;
+}
+
+.survey-results__empty {
+  margin: 146px 0 0;
+  text-align: center;
+}
+
+@media (hover: hover) {
+  .survey-results__toggle:hover {
+    background-color: var(--color-dropdown-head);
+  }
+
+  .survey-results__toggle:hover .survey-results__arrow {
+    color: var(--color-primary-orange);
+  }
+}
+
+@media (min-width: 1024px) {
+  :host {
+    padding: 94px 0 0;
+  }
+
+  .survey-results__toggle {
+    display: none;
+  }
+
+  .survey-results__body {
+    display: block;
+    margin-top: 0;
+  }
+}
