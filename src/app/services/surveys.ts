@@ -2,10 +2,11 @@ import { computed, Injectable, OnDestroy, signal } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 import { Survey } from '../models/survey';
-import { hasEnded } from '../utils/date';
+import { compareDates, hasEnded } from '../utils/date';
 
 const SURVEYS_CHANNEL = 'surveys-live';
 const SURVEYS_TABLE = { schema: 'public', table: 'surveys' };
+const ENDING_SOON_COUNT = 3;
 
 @Injectable({ providedIn: 'root' })
 export class Surveys implements OnDestroy {
@@ -20,6 +21,12 @@ export class Surveys implements OnDestroy {
   );
   readonly pastSurveys = computed(() =>
     this.surveyList().filter((survey) => hasEnded(survey.end_date)),
+  );
+  readonly endingSoonSurveys = computed(() =>
+    this.activeSurveys()
+      .filter((survey) => survey.end_date !== null)
+      .sort((first, second) => compareDates(first.end_date, second.end_date))
+      .slice(0, ENDING_SOON_COUNT),
   );
 
   /** Starts loading the surveys and listening for changes as soon as the service is created. */
@@ -42,6 +49,7 @@ export class Surveys implements OnDestroy {
     this.surveyList.set((data ?? []) as Survey[]);
     this.loadFinished.set(true);
   }
+
   /** Keeps the list in step with surveys that are created or changed in the database. */
   private listenForChanges(): void {
     this.channel

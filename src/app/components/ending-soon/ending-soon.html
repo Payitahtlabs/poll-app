@@ -1,0 +1,10 @@
+@if (isVisible()) {
+  <section class="ending-soon">
+    <h3 class="ending-soon__title">Ending soon surveys</h3>
+    <ul class="ending-soon__cards" role="list">
+      @for (survey of surveys(); track survey.id) {
+        <li class="ending-soon__item"><app-highlight-card [survey]="survey" /></li>
+      }
+    </ul>
+  </section>
+}

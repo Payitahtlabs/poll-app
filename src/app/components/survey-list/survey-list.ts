@@ -2,10 +2,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { SurveyCategory } from '../../models/survey-category';
 import { Surveys } from '../../services/surveys';
 import { CategoryFilter } from '../category-filter/category-filter';
+import { EndingSoon } from '../ending-soon/ending-soon';
 import { SurveyCard } from '../survey-card/survey-card';
 
 @Component({
-  imports: [CategoryFilter, SurveyCard],
+  imports: [CategoryFilter, EndingSoon, SurveyCard],
   selector: 'app-survey-list',
   styleUrl: './survey-list.scss',
   templateUrl: './survey-list.html',

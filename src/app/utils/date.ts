@@ -30,6 +30,16 @@ export function hasEnded(endDate: string | null): boolean {
 }
 
 /**
+ * Orders two dates so that the earlier one comes first; a missing date counts as the earliest.
+ * @param first - A date in the form "YYYY-MM-DD", or null when there is none.
+ * @param second - The date to compare it with, in the same form.
+ * @returns Negative when the first date is earlier, positive when it is later, 0 when equal.
+ */
+export function compareDates(first: string | null, second: string | null): number {
+  return (first ?? '').localeCompare(second ?? '');
+}
+
+/**
  * Writes a date the way the design shows it.
  * @param isoDate - A date in the form "YYYY-MM-DD".
  * @returns The date in the form "DD.MM.YYYY".
