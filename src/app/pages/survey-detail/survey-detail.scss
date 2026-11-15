@@ -107,7 +107,9 @@
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
-  transition: transform 0.1s ease;
+  transition:
+    transform 0.1s ease,
+    background-color 0.3s ease-out;
 }
 
 .survey-detail__complete:enabled:active {
@@ -168,5 +170,11 @@
 
   .survey-detail__complete-label--wide {
     display: inline;
+  }
+}
+
+@media (min-width: 1024px) and (hover: hover) {
+  .survey-detail__complete:enabled:hover {
+    background-color: var(--color-complete-soft-hover);
   }
 }
