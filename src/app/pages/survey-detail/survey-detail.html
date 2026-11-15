@@ -19,7 +19,13 @@
       }
       <ol class="survey-detail__questions" role="list">
         @for (question of questions(); track question.id) {
-          <li><app-survey-question [question]="question" /></li>
+          <li>
+            <app-survey-question
+              [question]="question"
+              [selectedIds]="selectedOptionIds()"
+              (answerToggled)="updateSelection(question, $event)"
+            />
+          </li>
         }
       </ol>
       <button class="survey-detail__complete" type="button" [disabled]="!isRunning()">

@@ -33,11 +33,19 @@
 }
 
 .survey-question__answer {
+  position: relative;
   display: flex;
   align-items: flex-start;
   gap: 16px;
   padding: 0 4px;
   font-size: 16px;
+  cursor: pointer;
+}
+
+.survey-question__input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .survey-question__box {
@@ -47,6 +55,15 @@
   margin: 3px;
   border: 1.5px solid currentColor;
   border-radius: 3px;
+}
+
+.survey-question__input:checked + .survey-question__box {
+  background-color: var(--color-primary-orange);
+}
+
+.survey-question__input:focus-visible + .survey-question__box {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
 }
 
 .survey-question__label {

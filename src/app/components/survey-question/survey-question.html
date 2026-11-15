@@ -7,12 +7,21 @@
 }
 <ul class="survey-question__answers" role="list">
   @for (option of question().answer_options; track option.id) {
-    <li class="survey-question__answer">
-      <span class="survey-question__box"></span>
-      <span class="survey-question__label">
-        <span class="survey-question__letter">{{ option.position | answerLetter }}.</span>
-        <span>{{ option.text }}</span>
-      </span>
+    <li>
+      <label class="survey-question__answer">
+        <input
+          class="survey-question__input"
+          [type]="inputType()"
+          [name]="groupName()"
+          [checked]="isSelected(option.id)"
+          (change)="answerToggled.emit(option.id)"
+        />
+        <span class="survey-question__box"></span>
+        <span class="survey-question__label">
+          <span class="survey-question__letter">{{ option.position | answerLetter }}.</span>
+          <span>{{ option.text }}</span>
+        </span>
+      </label>
     </li>
   }
 </ul>
