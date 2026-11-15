@@ -1,0 +1,161 @@
+$header-height: 48px + 50px;
+$gap-below-header: 54px;
+$icon-box: 24px;
+$icon-glyph: 14px;
+
+.create-dialog {
+  width: 100%;
+  max-width: none;
+  max-height: calc(100dvh - #{$header-height + $gap-below-header});
+  margin: $header-height + $gap-below-header 0 0;
+  padding: 40px var(--page-gutter);
+  border: 0;
+  border-radius: 5px 100px 5px 5px;
+  background-color: var(--color-primary-purple);
+  box-shadow: 0 24px 64px var(--color-dialog-shadow);
+  color: var(--color-white);
+  font-family: var(--font-body);
+}
+
+.create-dialog::backdrop {
+  background-color: var(--color-dialog-backdrop);
+}
+
+.create-dialog__head {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-areas:
+    'badge cancel'
+    'title .';
+  row-gap: 16px;
+  align-items: start;
+  padding-inline: 9px;
+}
+
+.create-dialog__badge {
+  grid-area: badge;
+  justify-self: start;
+  margin: 0;
+  padding: 3px 12px 3px 8px;
+  border-radius: 0 14px 0 0;
+  background-color: var(--color-secondary-orange);
+  color: var(--color-ink);
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.create-dialog__title {
+  grid-area: title;
+  margin: 0;
+  color: var(--color-title-orange);
+  font-family: var(--font-display);
+  font-size: 56px;
+  font-weight: 400;
+  line-height: 42px;
+}
+
+.create-dialog__cancel {
+  grid-area: cancel;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 39px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 10px;
+  background-color: var(--color-complete-soft);
+  color: var(--color-white);
+  font-family: var(--font-button);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease-out,
+    transform 0.1s ease;
+}
+
+.create-dialog__cancel:active {
+  transform: scale(0.97);
+}
+
+.create-dialog__cancel-label {
+  display: none;
+}
+
+.create-dialog__fields {
+  margin-top: 32px;
+  padding: 40px 10px;
+  border-radius: 5px 80px 5px 5px;
+  background-color: var(--color-bg-form);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .create-dialog[open] {
+    animation: dialog-enter 0.2s ease-out;
+  }
+
+  .create-dialog[open]::backdrop {
+    animation: backdrop-enter 0.2s ease-out;
+  }
+}
+
+@keyframes dialog-enter {
+  from {
+    opacity: 0;
+    transform: scale(0.98);
+  }
+}
+
+@keyframes backdrop-enter {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (hover: hover) {
+  .create-dialog__cancel:hover {
+    background-color: var(--color-complete-soft-hover);
+  }
+}
+
+@media (min-width: 1024px) {
+  .create-dialog {
+    width: min(100% - 2 * var(--page-gutter), 1166px);
+    max-height: calc(100dvh - 2 * var(--page-gutter));
+    margin: auto;
+    padding: 40px 54px;
+  }
+
+  .create-dialog__head {
+    grid-template-areas:
+      'badge .'
+      'title cancel';
+    row-gap: 0;
+    align-items: end;
+    padding-inline: 0;
+  }
+
+  .create-dialog__title {
+    line-height: normal;
+  }
+
+  .create-dialog__cancel {
+    gap: 10px;
+    width: auto;
+    height: auto;
+    padding: 8px 12px;
+  }
+
+  .create-dialog__cancel-label {
+    display: inline;
+  }
+
+  .create-dialog__cancel-icon {
+    margin: ($icon-box - $icon-glyph) * 0.5;
+  }
+
+  .create-dialog__fields {
+    padding: 40px 32px;
+  }
+}

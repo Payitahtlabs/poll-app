@@ -1,0 +1,17 @@
+<dialog #dialog class="create-dialog" aria-labelledby="create-dialog-title" (close)="closeDialog()">
+  <header class="create-dialog__head">
+    <p class="create-dialog__badge">Draft</p>
+    <h2 class="create-dialog__title" id="create-dialog-title">Create new survey</h2>
+    <button class="create-dialog__cancel" type="button" aria-label="Cancel" (click)="closeDialog()">
+      <span class="create-dialog__cancel-label">Cancel</span>
+      <img
+        class="create-dialog__cancel-icon"
+        src="./assets/images/close-light.svg"
+        alt=""
+        width="14"
+        height="14"
+      />
+    </button>
+  </header>
+  <div class="create-dialog__fields"></div>
+</dialog>

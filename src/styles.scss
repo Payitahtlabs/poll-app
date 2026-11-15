@@ -81,6 +81,9 @@
   --color-complete-soft-hover: rgb(255 183 112 / 60%);
   --color-answer-hover: rgb(255 207 161 / 40%);
   --color-bar-track: #ededed;
+  --color-bg-form: rgb(142 112 153 / 16%);
+  --color-dialog-backdrop: rgb(255 255 255 / 20%);
+  --color-dialog-shadow: rgb(34 18 39 / 45%);
   --color-share: #d79451;
   --font-display: 'Nerko One', cursive;
   --font-body: 'Mulish', sans-serif;
@@ -100,6 +103,10 @@ body {
   background-color: var(--color-primary-purple);
   color: var(--color-white);
   font-family: var(--font-body);
+}
+
+body:has(dialog[open]) {
+  overflow: hidden;
 }
 
 body:has(app-survey-detail) {
