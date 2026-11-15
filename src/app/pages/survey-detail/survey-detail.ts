@@ -8,9 +8,11 @@ import { Surveys } from '../../services/surveys';
 import { hasEnded } from '../../utils/date';
 import { getUnansweredPositions, toggleAnswer } from '../../utils/selection';
 import { describeUnanswered } from '../../utils/text';
+import { readVote, saveVote } from '../../utils/vote-storage';
 
 const THANKS_MESSAGE = 'Thanks, your vote was counted.';
 const SEND_FAILED_MESSAGE = 'Your vote could not be sent. Please try again.';
+const ALREADY_VOTED_MESSAGE = 'You already voted in this survey.';
 
 @Component({
   imports: [RouterLink, SurveyQuestion, SurveyResults, DeadlineDatePipe],
@@ -24,7 +26,7 @@ export class SurveyDetail implements OnInit {
   readonly selectedOptionIds = signal<number[]>([]);
   readonly feedback = signal('');
   readonly isSending = signal(false);
-  readonly hasSubmitted = signal(false);
+  readonly hasVoted = signal(false);
   readonly survey = computed(() =>
     this.surveysService.surveys().find((survey) => survey.id === this.id()),
   );
@@ -35,13 +37,13 @@ export class SurveyDetail implements OnInit {
     const survey = this.survey();
     return survey !== undefined && !hasEnded(survey.end_date);
   });
-  readonly isCompleteDisabled = computed(
-    () => !this.isRunning() || this.isSending() || this.hasSubmitted(),
-  );
+  readonly isLocked = computed(() => !this.isRunning() || this.hasVoted());
+  readonly isCompleteDisabled = computed(() => this.isLocked() || this.isSending());
 
-  /** Loads the questions of the survey named in the address. */
+  /** Loads the questions of the survey named in the address and any vote sent before. */
   ngOnInit(): void {
     this.surveysService.openSurvey(this.id());
+    this.restoreVote();
   }
 
   /**
@@ -72,7 +74,21 @@ export class SurveyDetail implements OnInit {
     this.isSending.set(true);
     const isCounted = await this.surveysService.submitVotes(this.selectedOptionIds());
     this.isSending.set(false);
-    this.hasSubmitted.set(isCounted);
+    if (isCounted) {
+      saveVote(this.id(), this.selectedOptionIds());
+    }
+    this.hasVoted.set(isCounted);
     this.feedback.set(isCounted ? THANKS_MESSAGE : SEND_FAILED_MESSAGE);
+  }
+
+  /** Shows the answers this browser already sent and locks the survey against a second vote. */
+  private restoreVote(): void {
+    const sentIds = readVote(this.id());
+    if (sentIds === null) {
+      return;
+    }
+    this.selectedOptionIds.set(sentIds);
+    this.hasVoted.set(true);
+    this.feedback.set(ALREADY_VOTED_MESSAGE);
   }
 }

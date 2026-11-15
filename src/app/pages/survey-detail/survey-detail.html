@@ -23,6 +23,7 @@
             <app-survey-question
               [question]="question"
               [selectedIds]="selectedOptionIds()"
+              [isLocked]="isLocked()"
               (answerToggled)="updateSelection(question, $event)"
             />
           </li>

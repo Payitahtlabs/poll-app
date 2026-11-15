@@ -44,6 +44,10 @@
   transition: background-color 0.3s ease-out;
 }
 
+.survey-question__answer:has(:disabled) {
+  cursor: default;
+}
+
 .survey-question__input {
   position: absolute;
   opacity: 0;
@@ -89,7 +93,7 @@
 }
 
 @media (hover: hover) {
-  .survey-question__answer:not(:has(:checked)):hover {
+  .survey-question__answer:not(:has(:checked, :disabled)):hover {
     background-color: var(--color-answer-hover);
   }
 }

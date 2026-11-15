@@ -11,6 +11,7 @@ import { AnswerLetterPipe } from '../../pipes/answer-letter-pipe';
 export class SurveyQuestion {
   readonly question = input.required<QuestionWithOptions>();
   readonly selectedIds = input.required<number[]>();
+  readonly isLocked = input(false);
   readonly answerToggled = output<number>();
   readonly inputType = computed(() => (this.question().allow_multiple ? 'checkbox' : 'radio'));
   readonly groupName = computed(() => `question-${this.question().id}`);

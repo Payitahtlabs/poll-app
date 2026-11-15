@@ -14,6 +14,7 @@
           [type]="inputType()"
           [name]="groupName()"
           [checked]="isSelected(option.id)"
+          [disabled]="isLocked()"
           (change)="answerToggled.emit(option.id)"
         />
         <span class="survey-question__box">
