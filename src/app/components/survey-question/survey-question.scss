@@ -38,8 +38,10 @@
   align-items: flex-start;
   gap: 16px;
   padding: 0 4px;
+  border-radius: 3px;
   font-size: 16px;
   cursor: pointer;
+  transition: background-color 0.3s ease-out;
 }
 
 .survey-question__input {
@@ -58,7 +60,17 @@
 }
 
 .survey-question__input:checked + .survey-question__box {
+  border-color: var(--color-primary-orange);
   background-color: var(--color-primary-orange);
+}
+
+.survey-question__check {
+  display: none;
+  margin: 1.5px auto 0;
+}
+
+.survey-question__input:checked + .survey-question__box .survey-question__check {
+  display: block;
 }
 
 .survey-question__input:focus-visible + .survey-question__box {
@@ -74,4 +86,10 @@
 .survey-question__letter {
   flex: none;
   font-weight: 700;
+}
+
+@media (hover: hover) {
+  .survey-question__answer:not(:has(:checked)):hover {
+    background-color: var(--color-answer-hover);
+  }
 }

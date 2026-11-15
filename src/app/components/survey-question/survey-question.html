@@ -16,7 +16,15 @@
           [checked]="isSelected(option.id)"
           (change)="answerToggled.emit(option.id)"
         />
-        <span class="survey-question__box"></span>
+        <span class="survey-question__box">
+          <img
+            class="survey-question__check"
+            src="./assets/images/checkbox-check.svg"
+            alt=""
+            width="10"
+            height="8"
+          />
+        </span>
         <span class="survey-question__label">
           <span class="survey-question__letter">{{ option.position | answerLetter }}.</span>
           <span>{{ option.text }}</span>
