@@ -1,12 +1,15 @@
 import { computed, Injectable, OnDestroy, signal } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
+import { AnswerOption } from '../models/answer-option';
 import { QuestionWithOptions } from '../models/question';
 import { Survey } from '../models/survey';
 import { compareDates, hasEnded } from '../utils/date';
+import { replaceById } from '../utils/lists';
 
 const SURVEYS_CHANNEL = 'surveys-live';
 const SURVEYS_TABLE = { schema: 'public', table: 'surveys' };
+const ANSWER_OPTIONS_TABLE = { schema: 'public', table: 'answer_options' };
 const ENDING_SOON_COUNT = 3;
 
 @Injectable({ providedIn: 'root' })
@@ -72,7 +75,7 @@ export class Surveys implements OnDestroy {
     this.loadFinished.set(true);
   }
 
-  /** Keeps the list in step with surveys that are created or changed in the database. */
+  /** Keeps surveys and the votes of the open survey in step with the database. */
   private listenForChanges(): void {
     this.channel
       .on('postgres_changes', { event: 'INSERT', ...SURVEYS_TABLE }, (payload) =>
@@ -80,6 +83,9 @@ export class Surveys implements OnDestroy {
       )
       .on('postgres_changes', { event: 'UPDATE', ...SURVEYS_TABLE }, (payload) =>
         this.replaceSurvey(payload.new as Survey),
+      )
+      .on('postgres_changes', { event: 'UPDATE', ...ANSWER_OPTIONS_TABLE }, (payload) =>
+        this.replaceAnswerOption(payload.new as AnswerOption),
       )
       .subscribe();
   }
@@ -98,5 +104,19 @@ export class Surveys implements OnDestroy {
    */
   private replaceSurvey(survey: Survey): void {
     this.surveyList.update((list) => list.map((item) => (item.id === survey.id ? survey : item)));
+  }
+
+  /**
+   * Swaps a changed answer into its question so the results show its new votes.
+   * @param option - The answer with its new number of votes.
+   */
+  private replaceAnswerOption(option: AnswerOption): void {
+    this.questionList.update((questions) =>
+      questions.map((question) =>
+        question.id === option.question_id
+          ? { ...question, answer_options: replaceById(question.answer_options, option) }
+          : question,
+      ),
+    );
   }
 }

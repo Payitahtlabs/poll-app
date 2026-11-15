@@ -104,6 +104,7 @@
   height: 100%;
   border-radius: 0 20px 20px 0;
   background-color: var(--color-primary-orange);
+  transition: width 0.3s ease-out;
 }
 
 .survey-results__share {
@@ -150,5 +151,11 @@
   .survey-results__body {
     display: block;
     margin-top: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .survey-results__bar {
+    transition: none;
   }
 }
