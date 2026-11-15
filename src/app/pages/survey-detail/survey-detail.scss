@@ -110,8 +110,13 @@
   transition: transform 0.1s ease;
 }
 
-.survey-detail__complete:active {
+.survey-detail__complete:enabled:active {
   transform: scale(0.97);
+}
+
+.survey-detail__complete:disabled {
+  opacity: 0.5;
+  cursor: default;
 }
 
 .survey-detail__complete-label--wide {

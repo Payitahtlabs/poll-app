@@ -22,7 +22,7 @@
           <li><app-survey-question [question]="question" /></li>
         }
       </ol>
-      <button class="survey-detail__complete" type="button">
+      <button class="survey-detail__complete" type="button" [disabled]="!isRunning()">
         <span class="survey-detail__complete-label">Complete</span>
         <span class="survey-detail__complete-label survey-detail__complete-label--wide">
           Complete survey
