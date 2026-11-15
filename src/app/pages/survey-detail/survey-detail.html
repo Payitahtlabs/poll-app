@@ -28,7 +28,12 @@
           </li>
         }
       </ol>
-      <button class="survey-detail__complete" type="button" [disabled]="!isRunning()">
+      <button
+        class="survey-detail__complete"
+        type="button"
+        [disabled]="isCompleteDisabled()"
+        (click)="completeSurvey()"
+      >
         <span class="survey-detail__complete-label">Complete</span>
         <span class="survey-detail__complete-label survey-detail__complete-label--wide">
           Complete survey
@@ -41,6 +46,7 @@
           height="16"
         />
       </button>
+      <p class="survey-detail__feedback" role="status">{{ feedback() }}</p>
     </article>
     @if (hasLoadedQuestions()) {
       <app-survey-results [questions]="questions()" />

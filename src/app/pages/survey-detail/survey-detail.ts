@@ -6,7 +6,11 @@ import { QuestionWithOptions } from '../../models/question';
 import { DeadlineDatePipe } from '../../pipes/deadline-date-pipe';
 import { Surveys } from '../../services/surveys';
 import { hasEnded } from '../../utils/date';
-import { toggleAnswer } from '../../utils/selection';
+import { getUnansweredPositions, toggleAnswer } from '../../utils/selection';
+import { describeUnanswered } from '../../utils/text';
+
+const THANKS_MESSAGE = 'Thanks, your vote was counted.';
+const SEND_FAILED_MESSAGE = 'Your vote could not be sent. Please try again.';
 
 @Component({
   imports: [RouterLink, SurveyQuestion, SurveyResults, DeadlineDatePipe],
@@ -18,6 +22,9 @@ export class SurveyDetail implements OnInit {
   private readonly surveysService = inject(Surveys);
   readonly id = input.required({ transform: numberAttribute });
   readonly selectedOptionIds = signal<number[]>([]);
+  readonly feedback = signal('');
+  readonly isSending = signal(false);
+  readonly hasSubmitted = signal(false);
   readonly survey = computed(() =>
     this.surveysService.surveys().find((survey) => survey.id === this.id()),
   );
@@ -28,6 +35,9 @@ export class SurveyDetail implements OnInit {
     const survey = this.survey();
     return survey !== undefined && !hasEnded(survey.end_date);
   });
+  readonly isCompleteDisabled = computed(
+    () => !this.isRunning() || this.isSending() || this.hasSubmitted(),
+  );
 
   /** Loads the questions of the survey named in the address. */
   ngOnInit(): void {
@@ -41,5 +51,28 @@ export class SurveyDetail implements OnInit {
    */
   updateSelection(question: QuestionWithOptions, optionId: number): void {
     this.selectedOptionIds.update((ids) => toggleAnswer(ids, question, optionId));
+    this.feedback.set('');
+  }
+
+  /** Sends the vote once every question has an answer, otherwise names the missing ones. */
+  async completeSurvey(): Promise<void> {
+    if (this.isCompleteDisabled()) {
+      return;
+    }
+    const unanswered = getUnansweredPositions(this.questions(), this.selectedOptionIds());
+    if (unanswered.length > 0) {
+      this.feedback.set(describeUnanswered(unanswered));
+      return;
+    }
+    await this.sendVote();
+  }
+
+  /** Sends the chosen answers and reports whether the vote was counted. */
+  private async sendVote(): Promise<void> {
+    this.isSending.set(true);
+    const isCounted = await this.surveysService.submitVotes(this.selectedOptionIds());
+    this.isSending.set(false);
+    this.hasSubmitted.set(isCounted);
+    this.feedback.set(isCounted ? THANKS_MESSAGE : SEND_FAILED_MESSAGE);
   }
 }

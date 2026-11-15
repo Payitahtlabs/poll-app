@@ -20,6 +20,23 @@ export function toggleAnswer(
 }
 
 /**
+ * Finds the questions that have no chosen answer yet.
+ * @param questions - All questions of the survey.
+ * @param selectedIds - The ids of all chosen answers.
+ * @returns The positions of the unanswered questions, in their order.
+ */
+export function getUnansweredPositions(
+  questions: QuestionWithOptions[],
+  selectedIds: number[],
+): number[] {
+  return questions
+    .filter(
+      (question) => !question.answer_options.some((option) => selectedIds.includes(option.id)),
+    )
+    .map((question) => question.position);
+}
+
+/**
  * Removes an id that is in the list and adds one that is not.
  * @param ids - The list to change.
  * @param id - The id to flip.

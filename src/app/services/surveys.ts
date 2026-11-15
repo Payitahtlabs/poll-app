@@ -65,6 +65,16 @@ export class Surveys implements OnDestroy {
     this.questionsLoadFinished.set(true);
   }
 
+  /**
+   * Sends the chosen answers of one survey as a single vote.
+   * @param optionIds - The ids of all chosen answers.
+   * @returns True when the database counted the vote.
+   */
+  async submitVotes(optionIds: number[]): Promise<boolean> {
+    const { error } = await this.supabase.rpc('submit_votes', { p_option_ids: optionIds });
+    return error === null;
+  }
+
   /** Loads all surveys from the database, newest first. */
   private async loadSurveys(): Promise<void> {
     const { data } = await this.supabase
