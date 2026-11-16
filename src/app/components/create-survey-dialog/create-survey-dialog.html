@@ -98,6 +98,29 @@
           </p>
         }
       </div>
+      <div class="create-form__questions">
+        @for (question of questions.controls; track question; let index = $index) {
+          <app-question-fields
+            class="create-form__question"
+            [question]="question"
+            [position]="getPosition(index)"
+            [isPublishAttempted]="isPublishAttempted()"
+            (removed)="removeQuestion(index)"
+          />
+        }
+        <div class="create-form__add-question">
+          <button
+            class="create-form__add-question-button"
+            type="button"
+            [disabled]="isQuestionLimitReached()"
+            (click)="addQuestion()"
+          >
+            Add next question
+            <app-add-icon />
+          </button>
+          <p class="create-form__limit">You can add up to {{ maxQuestions }} questions.</p>
+        </div>
+      </div>
     </form>
   </div>
 </dialog>

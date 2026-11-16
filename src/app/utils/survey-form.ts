@@ -1,4 +1,4 @@
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { SurveyCategory } from '../models/survey-category';
 import { QuestionForm, SurveyForm } from '../models/survey-form';
 import { notInPast, trimmedMaxLength, trimmedRequired } from './form-validators';
@@ -66,4 +66,24 @@ export function createSurveyForm(): SurveyForm {
       [Validators.minLength(MIN_QUESTIONS), Validators.maxLength(MAX_QUESTIONS)],
     ),
   });
+}
+
+/**
+ * Removes an entry from a list, or empties it when the list is already at its minimum.
+ * @param list - The questions or answers of the form.
+ * @param index - The position of the entry in the list, starting at 0.
+ * @param minimum - The fewest entries the list may hold.
+ * @param createEmpty - Builds an empty entry to put in its place.
+ */
+export function removeOrClear<T extends AbstractControl>(
+  list: FormArray<T>,
+  index: number,
+  minimum: number,
+  createEmpty: () => T,
+): void {
+  if (list.length > minimum) {
+    list.removeAt(index);
+    return;
+  }
+  list.setControl(index, createEmpty());
 }

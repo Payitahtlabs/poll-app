@@ -1,0 +1,222 @@
+@use '../../../styles/form-fields' as form;
+
+$question-width: 429px;
+$letter-width: 23px;
+$letter-gap: 4px;
+$delete-gap: 8px;
+$answers-gap: 24px;
+$list-gap: 16px;
+$add-answer-indent: 26px;
+$box-size: 15px;
+$box-border: 1.5px;
+
+:host {
+  display: block;
+}
+
+.question__head {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'label delete'
+    'input input';
+  row-gap: 8px;
+  align-items: center;
+  padding-bottom: form.$error-slot;
+}
+
+.question__label {
+  @include form.label;
+
+  grid-area: label;
+}
+
+.question__delete {
+  grid-area: delete;
+  margin-right: form.$delete-inset;
+}
+
+.question__input {
+  @include form.input;
+
+  grid-area: input;
+}
+
+.question__error {
+  @include form.error;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.question__answers-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: $answers-gap - form.$error-slot;
+}
+
+.question__answers-title {
+  @include form.label;
+
+  margin: 0;
+}
+
+.question__multiple {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: $letter-gap;
+  color: var(--color-field);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.question__multiple-input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: 0;
+  opacity: 0;
+}
+
+.question__box {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: $box-size;
+  height: $box-size;
+  margin: 3px;
+  padding-top: $box-border;
+  border: $box-border solid var(--color-field);
+  border-radius: 3px;
+  transition:
+    background-color 0.3s ease-out,
+    border-color 0.3s ease-out;
+}
+
+.question__check {
+  display: none;
+}
+
+.question__multiple-input:checked + .question__box {
+  border-color: var(--color-primary-orange);
+  background-color: var(--color-primary-orange);
+}
+
+.question__multiple-input:checked + .question__box .question__check {
+  display: block;
+}
+
+.question__multiple-input:focus-visible + .question__box {
+  outline: 2px solid var(--color-primary-orange);
+  outline-offset: 2px;
+}
+
+.question__answers {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: $list-gap 0 0;
+  padding: 0;
+  list-style: none;
+}
+
+.question__answer {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'letter delete'
+    'input input';
+  row-gap: 4px;
+  align-items: center;
+}
+
+.question__letter {
+  @include form.label;
+
+  grid-area: letter;
+}
+
+.question__hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.question__answer-error {
+  @include form.error;
+
+  min-height: form.$error-slot;
+  margin: 0;
+  padding-top: 4px;
+}
+
+.question__add-answer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.question__add-answer-button {
+  @include form.action-button;
+
+  background-color: transparent;
+}
+
+.question__add-answer-text {
+  display: inline-flex;
+  align-items: center;
+  gap: $letter-gap;
+  border-bottom: 1px solid currentColor;
+}
+
+.question__limit {
+  margin: 0;
+  color: var(--color-field);
+  font-size: 14px;
+}
+
+@media (hover: hover) {
+  .question__multiple:hover .question__multiple-input:not(:checked) + .question__box {
+    border-color: var(--color-bg-card);
+    background-color: var(--color-checkbox-hover);
+  }
+
+  .question__add-answer-button:hover:not(:disabled) {
+    background-color: var(--color-tertiary-hover);
+  }
+}
+
+@media (min-width: 1024px) {
+  :host {
+    max-width: $question-width;
+  }
+
+  .question__delete {
+    margin-right: 0;
+  }
+
+  .question__answer {
+    grid-template-columns: $letter-width minmax(0, 1fr) auto;
+    grid-template-areas: 'letter input delete';
+    column-gap: $letter-gap;
+  }
+
+  .question__delete--answer {
+    margin-left: $delete-gap - $letter-gap;
+  }
+
+  .question__add-answer {
+    padding-left: $add-answer-indent;
+  }
+}

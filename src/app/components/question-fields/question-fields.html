@@ -1,0 +1,69 @@
+<div class="question__head" [formGroup]="question()">
+  <label class="question__label" [attr.for]="fieldId()">{{ position() }}. Question</label>
+  <app-delete-button
+    class="question__delete"
+    [label]="deleteLabel()"
+    (pressed)="removeQuestion()"
+  />
+  <input
+    class="question__input"
+    type="text"
+    formControlName="text"
+    required
+    [id]="fieldId()"
+    [attr.aria-describedby]="errorId()"
+    [attr.aria-invalid]="hasQuestionError()"
+  />
+  @if (hasQuestionError()) {
+    <p class="question__error" [id]="errorId()">{{ getQuestionError() }}</p>
+  }
+</div>
+<div class="question__answers-head" [formGroup]="question()">
+  <p class="question__answers-title" [id]="answersTitleId()">Answers</p>
+  <label class="question__multiple">
+    <input class="question__multiple-input" type="checkbox" formControlName="allowMultiple" />
+    <span class="question__box">
+      <img
+        class="question__check"
+        src="./assets/images/checkbox-check.svg"
+        alt=""
+        width="10"
+        height="8"
+      />
+    </span>
+    Allow multiple answers.
+  </label>
+</div>
+<ol class="question__answers" role="list" [attr.aria-labelledby]="answersTitleId()">
+  @for (answer of answers.controls; track answer; let index = $index) {
+    <li class="question__answer">
+      <label class="question__letter" [attr.for]="getAnswerId(index)">
+        <span class="question__hidden">Answer </span>{{ getAnswerLetter(index) }}.
+      </label>
+      <input
+        class="question__input question__input--answer"
+        type="text"
+        required
+        [id]="getAnswerId(index)"
+        [formControl]="answer"
+      />
+      <app-delete-button
+        class="question__delete question__delete--answer"
+        [label]="getAnswerDeleteLabel(index)"
+        (pressed)="removeAnswer(index)"
+      />
+    </li>
+  }
+</ol>
+<p class="question__answer-error" role="status">{{ getAnswerError() }}</p>
+<div class="question__add-answer">
+  <button
+    class="question__add-answer-button"
+    type="button"
+    [disabled]="isAnswerLimitReached()"
+    (click)="addAnswer()"
+  >
+    <span class="question__add-answer-text">Add answer <app-add-icon /></span>
+  </button>
+  <p class="question__limit">You can add up to {{ maxAnswers }} answer fields.</p>
+</div>

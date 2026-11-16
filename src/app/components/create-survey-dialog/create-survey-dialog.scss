@@ -1,3 +1,5 @@
+@use '../../../styles/form-fields' as form;
+
 $header-height: 48px + 50px;
 $gap-below-header: 54px;
 $icon-box: 24px;
@@ -7,9 +9,11 @@ $chosen-category-height: 23px;
 $date-column: 264px;
 $category-column: 206px;
 $column-gap: 64px;
-$error-slot: 22px;
 $form-gap: 8px;
 $note-gap: 24px - $form-gap;
+$question-gap: 40px;
+$add-question-gap: 88px - $question-gap;
+$questions-offset: 60px - form.$error-slot - $form-gap;
 
 .create-dialog {
   width: 100%;
@@ -122,7 +126,7 @@ $note-gap: 24px - $form-gap;
 .create-form__field {
   position: relative;
   display: grid;
-  padding-bottom: $error-slot;
+  padding-bottom: form.$error-slot;
   grid-template-columns: minmax(0, 1fr) auto;
   grid-template-areas:
     'label delete'
@@ -132,10 +136,9 @@ $note-gap: 24px - $form-gap;
 }
 
 .create-form__label {
+  @include form.label;
+
   grid-area: label;
-  color: var(--color-field);
-  font-size: 18px;
-  font-weight: 700;
 }
 
 .create-form__optional {
@@ -143,18 +146,9 @@ $note-gap: 24px - $form-gap;
 }
 
 .create-form__input {
+  @include form.input;
+
   grid-area: input;
-  width: 100%;
-  height: 37px;
-  padding: 7px 13px;
-  border: 0;
-  border-radius: 5px 20px 5px 5px;
-  background-color: var(--color-field);
-  color: var(--color-primary-purple);
-  font-family: var(--font-body);
-  font-size: 16px;
-  caret-color: var(--color-primary-purple);
-  transition: background-color 0.3s ease-out;
 }
 
 .create-form__input--multiline {
@@ -163,21 +157,13 @@ $note-gap: 24px - $form-gap;
   resize: vertical;
 }
 
-.create-form__input:focus {
-  outline: none;
-  background-color: var(--color-field-focus);
-}
-
 .create-form__delete {
   grid-area: delete;
-  margin-right: 16px;
+  margin-right: form.$delete-inset;
 }
 
 .create-form__error {
-  margin: 4px 0 0;
-  color: var(--color-primary-orange);
-  font-size: 14px;
-  font-weight: 600;
+  @include form.error;
 }
 
 .create-form__field .create-form__error {
@@ -188,6 +174,41 @@ $note-gap: 24px - $form-gap;
 
 .create-form__category {
   min-height: $category-height + $chosen-category-height;
+}
+
+.create-form__questions {
+  display: flex;
+  flex-direction: column;
+  gap: $question-gap;
+}
+
+.create-form__add-question {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 8px 16px;
+  margin-top: $add-question-gap;
+}
+
+.create-form__add-question-button {
+  @include form.action-button;
+
+  gap: 10px;
+  border-radius: 10px;
+  background-color: var(--color-complete-soft);
+}
+
+.create-form__limit {
+  margin: 0;
+  color: var(--color-field);
+  font-size: 14px;
+}
+
+@media (hover: hover) {
+  .create-form__add-question-button:hover:not(:disabled) {
+    background-color: var(--color-complete-soft-hover);
+  }
 }
 
 @media (prefers-reduced-motion: no-preference) {
@@ -264,7 +285,8 @@ $note-gap: 24px - $form-gap;
     grid-template-areas:
       'note note . .'
       'title title . description'
-      'end-date category . description';
+      'end-date category . description'
+      'questions questions questions questions';
     gap: $form-gap 0;
     align-items: start;
     padding: 40px 32px;
@@ -272,6 +294,20 @@ $note-gap: 24px - $form-gap;
 
   .create-form__note {
     grid-area: note;
+  }
+
+  .create-form__questions {
+    display: grid;
+    grid-area: questions;
+    grid-template-columns: minmax(0, $date-column + $category-column) minmax(0, 1fr);
+    gap: $question-gap $column-gap;
+    align-items: start;
+    margin-top: $questions-offset;
+  }
+
+  .create-form__add-question {
+    justify-content: flex-start;
+    margin-top: 0;
   }
 
   .create-form__field {

@@ -1,6 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-
-const LETTER_A_CODE = 'A'.charCodeAt(0);
+import { toAnswerLetter } from '../utils/text';
 
 @Pipe({ name: 'answerLetter' })
 export class AnswerLetterPipe implements PipeTransform {
@@ -10,6 +9,6 @@ export class AnswerLetterPipe implements PipeTransform {
    * @returns "A" for 1, "B" for 2 and so on.
    */
   transform(position: number): string {
-    return String.fromCharCode(LETTER_A_CODE + position - 1);
+    return toAnswerLetter(position);
   }
 }
