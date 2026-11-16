@@ -14,3 +14,5 @@ export type SurveyForm = FormGroup<{
   description: FormControl<string>;
   questions: FormArray<QuestionForm>;
 }>;
+
+export type SurveyFieldName = Exclude<keyof SurveyForm['controls'], 'questions'>;

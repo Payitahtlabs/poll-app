@@ -1,17 +1,103 @@
 <dialog #dialog class="create-dialog" aria-labelledby="create-dialog-title" (close)="closeDialog()">
-  <header class="create-dialog__head">
-    <p class="create-dialog__badge">Draft</p>
-    <h2 class="create-dialog__title" id="create-dialog-title">Create new survey</h2>
-    <button class="create-dialog__cancel" type="button" aria-label="Cancel" (click)="closeDialog()">
-      <span class="create-dialog__cancel-label">Cancel</span>
-      <img
-        class="create-dialog__cancel-icon"
-        src="./assets/images/close-light.svg"
-        alt=""
-        width="14"
-        height="14"
-      />
-    </button>
-  </header>
-  <div class="create-dialog__fields"></div>
+  <div class="create-dialog__panel">
+    <header class="create-dialog__head">
+      <p class="create-dialog__badge">Draft</p>
+      <h2 class="create-dialog__title" id="create-dialog-title">Create new survey</h2>
+      <button
+        class="create-dialog__cancel"
+        type="button"
+        aria-label="Cancel"
+        (click)="closeDialog()"
+      >
+        <span class="create-dialog__cancel-label">Cancel</span>
+        <img
+          class="create-dialog__cancel-icon"
+          src="./assets/images/close-light.svg"
+          alt=""
+          width="14"
+          height="14"
+        />
+      </button>
+    </header>
+    <form class="create-form" [formGroup]="form()">
+      <p class="create-form__note">* Required fields</p>
+      <div class="create-form__field create-form__field--title">
+        <label class="create-form__label" for="survey-title">
+          Survey name <span aria-hidden="true">*</span>
+        </label>
+        <input
+          class="create-form__input"
+          id="survey-title"
+          type="text"
+          formControlName="title"
+          required
+          aria-describedby="survey-title-error"
+          [attr.aria-invalid]="hasError('title')"
+        />
+        <app-delete-button
+          class="create-form__delete"
+          label="Clear survey name"
+          (pressed)="clearField('title')"
+        />
+        @if (hasError('title')) {
+          <p class="create-form__error" id="survey-title-error">{{ getError('title') }}</p>
+        }
+      </div>
+      <div class="create-form__category">
+        <app-category-filter
+          label="Choose category *"
+          [hasAllOption]="false"
+          [selected]="form().controls.category.value"
+          (categorySelected)="selectCategory($event)"
+        />
+        @if (hasError('category')) {
+          <p class="create-form__error" id="survey-category-error">{{ getError('category') }}</p>
+        }
+      </div>
+      <div class="create-form__field create-form__field--end-date">
+        <label class="create-form__label" for="survey-end-date">
+          Set end date <span class="create-form__optional">(optional)</span>
+        </label>
+        <input
+          class="create-form__input"
+          id="survey-end-date"
+          type="date"
+          formControlName="endDate"
+          aria-describedby="survey-end-date-error"
+          [min]="today"
+          [attr.aria-invalid]="hasError('endDate')"
+        />
+        <app-delete-button
+          class="create-form__delete"
+          label="Clear end date"
+          (pressed)="clearField('endDate')"
+        />
+        @if (hasError('endDate')) {
+          <p class="create-form__error" id="survey-end-date-error">{{ getError('endDate') }}</p>
+        }
+      </div>
+      <div class="create-form__field create-form__field--description">
+        <label class="create-form__label" for="survey-description">
+          Describing text <span class="create-form__optional">(optional)</span>
+        </label>
+        <textarea
+          class="create-form__input create-form__input--multiline"
+          id="survey-description"
+          formControlName="description"
+          aria-describedby="survey-description-error"
+          [attr.aria-invalid]="hasError('description')"
+        ></textarea>
+        <app-delete-button
+          class="create-form__delete"
+          label="Clear description"
+          (pressed)="clearField('description')"
+        />
+        @if (hasError('description')) {
+          <p class="create-form__error" id="survey-description-error">
+            {{ getError('description') }}
+          </p>
+        }
+      </div>
+    </form>
+  </div>
 </dialog>
