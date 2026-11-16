@@ -13,6 +13,8 @@ import { SURVEY_CATEGORIES, SurveyCategory } from '../../models/survey-category'
 export class CategoryFilter {
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   readonly categories = SURVEY_CATEGORIES;
+  readonly label = input('Sort by categories');
+  readonly hasAllOption = input(true);
   readonly selected = input<SurveyCategory | null>(null);
   readonly categorySelected = output<SurveyCategory | null>();
   readonly isOpen = signal(false);
