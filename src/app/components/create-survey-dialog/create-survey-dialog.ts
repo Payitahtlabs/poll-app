@@ -1,5 +1,6 @@
 import { Component, effect, ElementRef, inject, viewChild } from '@angular/core';
 import { CreateDialog } from '../../services/create-dialog';
+import { createSurveyForm } from '../../utils/survey-form';
 
 @Component({
   selector: 'app-create-survey-dialog',
@@ -9,6 +10,7 @@ import { CreateDialog } from '../../services/create-dialog';
 export class CreateSurveyDialog {
   private readonly createDialog = inject(CreateDialog);
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
+  protected readonly form = createSurveyForm();
 
   constructor() {
     effect(() => this.syncDialog(this.createDialog.isOpen()));
