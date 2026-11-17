@@ -246,8 +246,13 @@ $publish-open-padding: $publish-padding-inline + $publish-icon-width + $publish-
 }
 
 .create-dialog__publish-button:disabled {
-  opacity: 0.5;
+  padding-right: $publish-open-padding;
+  background-color: var(--color-primary-orange);
   cursor: default;
+}
+
+.create-dialog__publish-button:disabled .create-dialog__publish-icon {
+  opacity: 1;
 }
 
 .create-dialog__publish-label {
