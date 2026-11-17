@@ -77,7 +77,8 @@ export class Surveys implements OnDestroy {
   }
 
   /**
-   * Stores a new survey with its questions and answers in one step.
+   * Stores a new survey with its questions and answers in one step and loads it right away,
+   * so its page never waits for the live update.
    * @param survey - The survey as the visitor filled it in.
    * @returns The id of the new survey, or null when the database refused it.
    */
@@ -89,7 +90,11 @@ export class Surveys implements OnDestroy {
       p_end_date: survey.endDate,
       p_questions: survey.questions,
     });
-    return error === null ? (data as number) : null;
+    if (error !== null) {
+      return null;
+    }
+    await this.loadSurvey(data as number);
+    return data as number;
   }
 
   /** Loads all surveys from the database, newest first. */
@@ -100,6 +105,17 @@ export class Surveys implements OnDestroy {
       .order('created_at', { ascending: false });
     this.surveyList.set((data ?? []) as Survey[]);
     this.loadFinished.set(true);
+  }
+
+  /**
+   * Loads a single survey and adds it to the list.
+   * @param surveyId - The id of the survey to load.
+   */
+  private async loadSurvey(surveyId: number): Promise<void> {
+    const { data } = await this.supabase.from('surveys').select('*').eq('id', surveyId).single();
+    if (data) {
+      this.addSurvey(data as Survey);
+    }
   }
 
   /** Keeps surveys and the votes of the open survey in step with the database. */
@@ -118,11 +134,13 @@ export class Surveys implements OnDestroy {
   }
 
   /**
-   * Puts a new survey at the top of the list, where the newest belongs.
+   * Puts a new survey at the top of the list, where the newest belongs, unless it is there already.
    * @param survey - The survey that was just created.
    */
   private addSurvey(survey: Survey): void {
-    this.surveyList.update((list) => [survey, ...list]);
+    this.surveyList.update((list) =>
+      list.some((item) => item.id === survey.id) ? list : [survey, ...list],
+    );
   }
 
   /**
