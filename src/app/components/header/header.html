@@ -15,4 +15,21 @@
       height="50"
     />
   </a>
+  <button
+    class="header__create"
+    type="button"
+    [class.header__create--hidden]="isDialogOpen()"
+    (click)="openDialog()"
+  >
+    <span class="header__create-label">
+      Create survey
+      <img
+        class="header__create-icon"
+        src="./assets/images/add-circle.svg"
+        alt=""
+        width="24"
+        height="24"
+      />
+    </span>
+  </button>
 </header>
