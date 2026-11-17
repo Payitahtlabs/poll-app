@@ -1,10 +1,13 @@
 import { Component, effect, ElementRef, inject, Injector, signal, viewChild } from '@angular/core';
 import { FormArray, ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
+import { NewSurvey } from '../../models/new-survey';
 import { SurveyCategory } from '../../models/survey-category';
 import { QuestionForm, SurveyFieldName } from '../../models/survey-form';
 import { CreateDialog } from '../../services/create-dialog';
+import { Surveys } from '../../services/surveys';
 import { getTodayInGermany } from '../../utils/date';
-import { focusAfterRender } from '../../utils/focus';
+import { focusAfterRender, focusFirstErrorAfterRender } from '../../utils/focus';
 import { describeError, isErrorVisible } from '../../utils/form-errors';
 import {
   createQuestionGroup,
@@ -12,6 +15,7 @@ import {
   MAX_QUESTIONS,
   MIN_QUESTIONS,
   removeOrClear,
+  toNewSurvey,
 } from '../../utils/survey-form';
 import { AddIcon } from '../add-icon/add-icon';
 import { CategoryFilter } from '../category-filter/category-filter';
@@ -23,6 +27,8 @@ const REQUIRED_MESSAGES: Partial<Record<SurveyFieldName, string>> = {
   category: 'Please choose a category.',
 };
 const FALLBACK_REQUIRED_MESSAGE = 'Please fill in this field.';
+const SEND_FAILED_MESSAGE =
+  'Your survey could not be published. Please check your connection and try again.';
 
 @Component({
   imports: [ReactiveFormsModule, AddIcon, CategoryFilter, DeleteButton, QuestionFields],
@@ -32,11 +38,15 @@ const FALLBACK_REQUIRED_MESSAGE = 'Please fill in this field.';
 })
 export class CreateSurveyDialog {
   private readonly createDialog = inject(CreateDialog);
+  private readonly surveysService = inject(Surveys);
+  private readonly router = inject(Router);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly injector = inject(Injector);
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
   protected readonly form = signal(createSurveyForm());
   protected readonly isPublishAttempted = signal(false);
+  protected readonly isSending = signal(false);
+  protected readonly sendError = signal('');
   protected readonly today = getTodayInGermany();
   protected readonly maxQuestions = MAX_QUESTIONS;
 
@@ -53,6 +63,7 @@ export class CreateSurveyDialog {
     this.createDialog.close();
     this.form.set(createSurveyForm());
     this.isPublishAttempted.set(false);
+    this.sendError.set('');
   }
 
   /**
@@ -129,6 +140,37 @@ export class CreateSurveyDialog {
    */
   hasError(name: SurveyFieldName): boolean {
     return this.getError(name) !== '';
+  }
+
+  /** Shows every missing input and leads to the first one, or sends the survey once all is fine. */
+  async publishSurvey(): Promise<void> {
+    if (this.isSending()) {
+      return;
+    }
+    this.isPublishAttempted.set(true);
+    this.sendError.set('');
+    const survey = toNewSurvey(this.form());
+    if (survey === null) {
+      focusFirstErrorAfterRender(this.host, this.injector);
+      return;
+    }
+    await this.sendSurvey(survey);
+  }
+
+  /**
+   * Stores the survey and opens it, or says why it could not be stored.
+   * @param survey - The survey as the visitor filled it in.
+   */
+  private async sendSurvey(survey: NewSurvey): Promise<void> {
+    this.isSending.set(true);
+    const id = await this.surveysService.createSurvey(survey);
+    this.isSending.set(false);
+    if (id === null) {
+      this.sendError.set(SEND_FAILED_MESSAGE);
+      return;
+    }
+    this.closeDialog();
+    this.router.navigate(['/survey', id]);
   }
 
   /**

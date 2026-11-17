@@ -46,6 +46,7 @@
         required
         [id]="getAnswerId(index)"
         [formControl]="answer"
+        [attr.aria-invalid]="hasAnswerError(answer)"
       />
       <app-delete-button
         class="question__delete question__delete--answer"

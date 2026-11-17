@@ -16,6 +16,7 @@ export class CategoryFilter {
   readonly label = input('Sort by categories');
   readonly hasAllOption = input(true);
   readonly selected = input<SurveyCategory | null>(null);
+  readonly isInvalid = input(false);
   readonly categorySelected = output<SurveyCategory | null>();
   readonly isOpen = signal(false);
   readonly isHighlighted = computed(() => this.isOpen() || this.selected() !== null);

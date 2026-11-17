@@ -3,6 +3,7 @@
   type="button"
   [class.category-filter__head--highlighted]="isHighlighted()"
   [attr.aria-expanded]="isOpen()"
+  [attr.aria-invalid]="isInvalid()"
   (click)="toggleMenu()"
 >
   {{ label() }}

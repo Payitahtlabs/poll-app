@@ -114,6 +114,15 @@ export class QuestionFields {
   }
 
   /**
+   * Tells whether an answer field is wrong and may say so, so the focus can find it.
+   * @param answer - The answer field to check.
+   * @returns True while the answer is wrong and its error may be shown.
+   */
+  hasAnswerError(answer: FormControl<string>): boolean {
+    return isErrorVisible(answer, this.isPublishAttempted());
+  }
+
+  /**
    * Describes the first problem among the answers that may be shown.
    * @returns One sentence naming the answer and the cause, or an empty string.
    */
