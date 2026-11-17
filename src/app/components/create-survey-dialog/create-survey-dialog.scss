@@ -235,6 +235,7 @@ $publish-open-padding: $publish-padding-inline + $publish-icon-width + $publish-
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
+  overflow: hidden;
   transition:
     background-color 0.3s ease-out,
     padding-right 0.3s ease-out,
