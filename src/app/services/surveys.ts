@@ -2,6 +2,7 @@ import { computed, Injectable, OnDestroy, signal } from '@angular/core';
 import { createClient } from '@supabase/supabase-js';
 import { environment } from '../../environments/environment';
 import { AnswerOption } from '../models/answer-option';
+import { NewSurvey } from '../models/new-survey';
 import { QuestionWithOptions } from '../models/question';
 import { Survey } from '../models/survey';
 import { compareDates, hasEnded } from '../utils/date';
@@ -73,6 +74,22 @@ export class Surveys implements OnDestroy {
   async submitVotes(optionIds: number[]): Promise<boolean> {
     const { error } = await this.supabase.rpc('submit_votes', { p_option_ids: optionIds });
     return error === null;
+  }
+
+  /**
+   * Stores a new survey with its questions and answers in one step.
+   * @param survey - The survey as the visitor filled it in.
+   * @returns The id of the new survey, or null when the database refused it.
+   */
+  async createSurvey(survey: NewSurvey): Promise<number | null> {
+    const { data, error } = await this.supabase.rpc('create_survey', {
+      p_title: survey.title,
+      p_category: survey.category,
+      p_description: survey.description,
+      p_end_date: survey.endDate,
+      p_questions: survey.questions,
+    });
+    return error === null ? (data as number) : null;
   }
 
   /** Loads all surveys from the database, newest first. */

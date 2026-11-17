@@ -1,4 +1,5 @@
 import { AbstractControl, FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { NewSurvey } from '../models/new-survey';
 import { SurveyCategory } from '../models/survey-category';
 import { QuestionForm, SurveyForm } from '../models/survey-form';
 import { notInPast, trimmedMaxLength, trimmedRequired } from './form-validators';
@@ -86,4 +87,17 @@ export function removeOrClear<T extends AbstractControl>(
     return;
   }
   list.setControl(index, createEmpty());
+}
+
+/**
+ * Turns a filled form into the survey the database expects.
+ * @param form - The survey form after the visitor pressed publish.
+ * @returns The survey ready to send, or null while the form is not valid.
+ */
+export function toNewSurvey(form: SurveyForm): NewSurvey | null {
+  const { category, endDate, ...fields } = form.getRawValue();
+  if (form.invalid || category === null) {
+    return null;
+  }
+  return { ...fields, category, endDate: endDate === '' ? null : endDate };
 }
