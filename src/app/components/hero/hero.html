@@ -4,7 +4,12 @@
     Create and share surveys in minutes – from team events to workplace culture. Collect opinions,
     engage your audience, and turn feedback into action.
   </p>
-  <button class="hero__button" type="button" (click)="openDialog()">
+  <button
+    class="hero__button"
+    type="button"
+    [class.hero__button--open]="isDialogOpen()"
+    (click)="openDialog()"
+  >
     <span class="hero__button-label">
       New survey
       <img

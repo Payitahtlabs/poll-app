@@ -8,6 +8,7 @@ import { CreateDialog } from '../../services/create-dialog';
 })
 export class Hero {
   private readonly createDialog = inject(CreateDialog);
+  readonly isDialogOpen = this.createDialog.isOpen;
 
   /** Opens the dialog for creating a survey. */
   openDialog(): void {

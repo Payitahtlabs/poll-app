@@ -72,6 +72,15 @@
   transition: opacity 0.3s ease-out;
 }
 
+.hero__button--open {
+  padding-right: 50px;
+  background-color: var(--color-primary-orange);
+}
+
+.hero__button--open .hero__button-icon {
+  opacity: 1;
+}
+
 @media (hover: hover) {
   .hero__button:hover {
     padding-right: 50px;
