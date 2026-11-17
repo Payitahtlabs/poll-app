@@ -1,4 +1,13 @@
-import { Component, computed, inject, input, numberAttribute, OnInit, signal } from '@angular/core';
+import {
+  Component,
+  computed,
+  effect,
+  inject,
+  input,
+  numberAttribute,
+  signal,
+  untracked,
+} from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { SurveyQuestion } from '../../components/survey-question/survey-question';
 import { SurveyResults } from '../../components/survey-results/survey-results';
@@ -20,7 +29,7 @@ const ALREADY_VOTED_MESSAGE = 'You already voted in this survey.';
   styleUrl: './survey-detail.scss',
   templateUrl: './survey-detail.html',
 })
-export class SurveyDetail implements OnInit {
+export class SurveyDetail {
   private readonly surveysService = inject(Surveys);
   readonly id = input.required({ transform: numberAttribute });
   readonly selectedOptionIds = signal<number[]>([]);
@@ -40,10 +49,12 @@ export class SurveyDetail implements OnInit {
   readonly isLocked = computed(() => !this.isRunning() || this.hasVoted());
   readonly isCompleteDisabled = computed(() => this.isLocked() || this.isSending());
 
-  /** Loads the questions of the survey named in the address and any vote sent before. */
-  ngOnInit(): void {
-    this.surveysService.openSurvey(this.id());
-    this.restoreVote();
+  /** Opens the survey named in the address again whenever the address names another one. */
+  constructor() {
+    effect(() => {
+      const id = this.id();
+      untracked(() => this.openSurvey(id));
+    });
   }
 
   /**
@@ -67,6 +78,18 @@ export class SurveyDetail implements OnInit {
       return;
     }
     await this.sendVote();
+  }
+
+  /**
+   * Loads the survey named in the address and forgets what was chosen in the one before.
+   * @param id - The id of the survey to show.
+   */
+  private openSurvey(id: number): void {
+    this.selectedOptionIds.set([]);
+    this.hasVoted.set(false);
+    this.feedback.set('');
+    this.surveysService.openSurvey(id);
+    this.restoreVote();
   }
 
   /** Sends the chosen answers and reports whether the vote was counted. */
