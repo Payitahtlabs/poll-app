@@ -2,9 +2,10 @@ import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CreateSurveyDialog } from './components/create-survey-dialog/create-survey-dialog';
 import { Header } from './components/header/header';
+import { ToastMessage } from './components/toast-message/toast-message';
 
 @Component({
-  imports: [RouterOutlet, Header, CreateSurveyDialog],
+  imports: [RouterOutlet, Header, CreateSurveyDialog, ToastMessage],
   selector: 'app-root',
   styleUrl: './app.scss',
   templateUrl: './app.html',

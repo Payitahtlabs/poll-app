@@ -1,0 +1,13 @@
+<div
+  class="toast"
+  [class.toast--visible]="isVisible()"
+  (mouseenter)="stopTimer()"
+  (mouseleave)="startTimer()"
+  (focusin)="stopTimer()"
+  (focusout)="startTimer()"
+>
+  <p class="toast__text">{{ message() }}</p>
+  <button class="toast__close" type="button" aria-label="Close message" (click)="close()">
+    <img src="./assets/images/close.svg" alt="" width="24" height="24" />
+  </button>
+</div>

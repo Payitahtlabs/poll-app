@@ -6,6 +6,7 @@ import { SurveyCategory } from '../../models/survey-category';
 import { QuestionForm, SurveyFieldName } from '../../models/survey-form';
 import { CreateDialog } from '../../services/create-dialog';
 import { Surveys } from '../../services/surveys';
+import { Toast } from '../../services/toast';
 import { getTodayInGermany } from '../../utils/date';
 import { focusAfterRender, focusFirstErrorAfterRender } from '../../utils/focus';
 import { describeError, isErrorVisible } from '../../utils/form-errors';
@@ -27,6 +28,7 @@ const REQUIRED_MESSAGES: Partial<Record<SurveyFieldName, string>> = {
   category: 'Please choose a category.',
 };
 const FALLBACK_REQUIRED_MESSAGE = 'Please fill in this field.';
+const PUBLISHED_MESSAGE = 'Your survey is now published';
 const SEND_FAILED_MESSAGE =
   'Your survey could not be published. Please check your connection and try again.';
 
@@ -40,6 +42,7 @@ export class CreateSurveyDialog {
   private readonly createDialog = inject(CreateDialog);
   private readonly surveysService = inject(Surveys);
   private readonly router = inject(Router);
+  private readonly toast = inject(Toast);
   private readonly host = inject<ElementRef<HTMLElement>>(ElementRef);
   private readonly injector = inject(Injector);
   private readonly dialog = viewChild.required<ElementRef<HTMLDialogElement>>('dialog');
@@ -158,7 +161,7 @@ export class CreateSurveyDialog {
   }
 
   /**
-   * Stores the survey and opens it, or says why it could not be stored.
+   * Stores the survey, opens it and confirms it, or says why it could not be stored.
    * @param survey - The survey as the visitor filled it in.
    */
   private async sendSurvey(survey: NewSurvey): Promise<void> {
@@ -170,7 +173,8 @@ export class CreateSurveyDialog {
       return;
     }
     this.closeDialog();
-    this.router.navigate(['/survey', id]);
+    await this.router.navigate(['/survey', id]);
+    this.toast.show(PUBLISHED_MESSAGE);
   }
 
   /**
