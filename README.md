@@ -1,59 +1,71 @@
 # PollApp
 
-This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.8.
+Create surveys, vote on them and watch the results change live. Built with Angular and
+Supabase.
 
-## Development server
+## Features
 
-To start a local development server, run:
+- Surveys ending soon are highlighted above the list, earliest first
+- Active and past surveys in separate tabs, filterable by category
+- New surveys are created in a dialog with up to 10 questions and 2–6 answers each, single
+  or multiple choice, optional description and end date
+- Results update live for every visitor while others vote
+- Past surveys stay readable but closed for voting
+- One vote per survey and browser (localStorage)
+- Responsive from 320 px; respects reduced-motion settings
 
-```bash
-ng serve
-```
+## Tech Stack
 
-Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+- **Angular 22** with standalone components, signals and typed reactive forms
+- **Supabase**: PostgreSQL with Row Level Security, Realtime and a nightly `pg_cron` job
+- **SCSS** with BEM class names
+- **pnpm**, Prettier
 
-## Code scaffolding
+## Getting Started
 
-Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
-
-```bash
-ng generate component component-name
-```
-
-For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
-
-```bash
-ng generate --help
-```
-
-## Building
-
-To build the project run:
+Requires Node.js 22 and pnpm.
 
 ```bash
-ng build
+git clone https://github.com/Payitahtlabs/poll-app.git
+cd poll-app
+pnpm install
+pnpm start
 ```
 
-This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+| Script       | Description                                  |
+| ------------ | -------------------------------------------- |
+| `pnpm start` | Dev server at `http://localhost:4200/`       |
+| `pnpm build` | Production build to `dist/poll-app/browser/` |
 
-## Running unit tests
+## Project Structure
 
-To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
-
-```bash
-ng test
+```
+supabase/
+├── migrations/        tables, functions, access rules, realtime, nightly reset
+└── seed.sql           demo surveys
+src/
+├── styles/            shared styles (buttons, form fields)
+└── app/
+    ├── models/        shape of the data
+    ├── services/      loading, live updates, dialog and message state
+    ├── pages/         home, survey detail
+    ├── components/    building blocks of the pages
+    ├── pipes/         date and letter formatting
+    └── utils/         pure helper functions
 ```
 
-## Running end-to-end tests
+## Notes
 
-For end-to-end (e2e) testing, run:
+- **Demo data** is restored every night at 04:00 (Berlin) so deadlines stay relative to
+  today. Surveys created by visitors are removed at that point.
+- **Votes and new surveys** are written only through two database functions that check every
+  input; direct writes are refused.
+- **Reduced motion:** with this system setting, moving effects are switched off. An animation
+  that does not seem to play is most likely this setting.
 
-```bash
-ng e2e
-```
+## Background
 
-Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+Project from the Developer Akademie frontend curriculum, written to the DA coding conventions.
 
-## Additional Resources
-
-For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+The visual design belongs to Developer Akademie and is used here for training purposes only.
+The source code is published for review but not released under an open-source license.
