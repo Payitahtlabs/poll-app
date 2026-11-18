@@ -53,10 +53,15 @@ export class CreateSurveyDialog {
   protected readonly today = getTodayInGermany();
   protected readonly maxQuestions = MAX_QUESTIONS;
 
+  /**
+   * Gives the template the list of questions to loop over.
+   * @returns The question groups of the form.
+   */
   get questions(): FormArray<QuestionForm> {
     return this.form().controls.questions;
   }
 
+  /** Opens or closes the dialog whenever the shared open state changes. */
   constructor() {
     effect(() => this.syncDialog(this.createDialog.isOpen()));
   }

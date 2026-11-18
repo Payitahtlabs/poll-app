@@ -32,6 +32,10 @@ export class QuestionFields {
   protected readonly answersTitleId = computed(() => `${this.fieldId()}-answers`);
   protected readonly deleteLabel = computed(() => `Delete question ${this.position()}`);
 
+  /**
+   * Gives the template the answer fields of this question to loop over.
+   * @returns The answer controls of the question.
+   */
   get answers(): FormArray<FormControl<string>> {
     return this.question().controls.answers;
   }
