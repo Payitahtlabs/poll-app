@@ -30,6 +30,7 @@ export class QuestionFields {
   protected readonly fieldId = computed(() => `question-${this.position()}`);
   protected readonly errorId = computed(() => `${this.fieldId()}-error`);
   protected readonly answersTitleId = computed(() => `${this.fieldId()}-answers`);
+  protected readonly answerErrorId = computed(() => `${this.fieldId()}-answer-error`);
   protected readonly deleteLabel = computed(() => `Delete question ${this.position()}`);
 
   /**

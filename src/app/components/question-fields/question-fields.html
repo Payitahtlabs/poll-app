@@ -50,6 +50,7 @@
         required
         [id]="getAnswerId(index)"
         [formControl]="answer"
+        [attr.aria-describedby]="answerErrorId()"
         [attr.aria-invalid]="hasAnswerError(answer)"
       />
       <app-delete-button
@@ -60,7 +61,7 @@
     </li>
   }
 </ol>
-<p class="question__answer-error" role="status">{{ getAnswerError() }}</p>
+<p class="question__answer-error" role="status" [id]="answerErrorId()">{{ getAnswerError() }}</p>
 <div class="question__add-answer">
   <button
     class="question__add-answer-button"
