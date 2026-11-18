@@ -125,16 +125,17 @@
     </form>
     <div class="create-dialog__publish">
       <button
-        class="create-dialog__publish-button"
+        class="button-primary create-dialog__publish-button"
         type="button"
+        [class.button-primary--open]="isSending()"
         [disabled]="isSending()"
         [attr.aria-busy]="isSending()"
         (click)="publishSurvey()"
       >
-        <span class="create-dialog__publish-label">
+        <span class="button-primary__label">
           Publish
           <img
-            class="create-dialog__publish-icon"
+            class="button-primary__icon"
             src="./assets/images/check.svg"
             alt=""
             width="18"

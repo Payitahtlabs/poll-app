@@ -15,10 +15,6 @@ $question-gap: 40px;
 $add-question-gap: 88px - $question-gap;
 $questions-offset: 60px - form.$error-slot - $form-gap;
 $publish-gap: 48px;
-$publish-icon-width: 18px;
-$publish-icon-gap: 10px;
-$publish-padding-inline: 16px;
-$publish-open-padding: $publish-padding-inline + $publish-icon-width + $publish-icon-gap;
 
 .create-dialog {
   width: 100%;
@@ -224,49 +220,11 @@ $publish-open-padding: $publish-padding-inline + $publish-icon-width + $publish-
 }
 
 .create-dialog__publish-button {
-  display: inline-flex;
-  align-items: center;
-  padding: 12px $publish-padding-inline;
-  border: 0;
-  border-radius: 10px;
-  background-color: var(--color-secondary-orange);
-  color: var(--color-ink);
-  font-family: var(--font-button);
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-  overflow: hidden;
-  transition:
-    background-color 0.3s ease-out,
-    padding-right 0.3s ease-out,
-    transform 0.1s ease;
-}
-
-.create-dialog__publish-button:active:not(:disabled) {
-  transform: scale(0.97);
+  --button-icon-width: 18px;
 }
 
 .create-dialog__publish-button:disabled {
-  padding-right: $publish-open-padding;
-  background-color: var(--color-primary-orange);
   cursor: default;
-}
-
-.create-dialog__publish-button:disabled .create-dialog__publish-icon {
-  opacity: 1;
-}
-
-.create-dialog__publish-label {
-  position: relative;
-}
-
-.create-dialog__publish-icon {
-  position: absolute;
-  top: 50%;
-  left: calc(100% + #{$publish-icon-gap});
-  translate: 0 -50%;
-  opacity: 0;
-  transition: opacity 0.3s ease-out;
 }
 
 .create-dialog__send-error {
@@ -278,40 +236,6 @@ $publish-open-padding: $publish-padding-inline + $publish-icon-width + $publish-
 
 .create-dialog__send-error:empty {
   display: none;
-}
-
-@media (hover: hover) {
-  .create-dialog__publish-button:hover:not(:disabled) {
-    padding-right: $publish-open-padding;
-    background-color: var(--color-primary-orange);
-  }
-
-  .create-dialog__publish-button:hover:not(:disabled) .create-dialog__publish-icon {
-    opacity: 1;
-  }
-}
-
-@media (hover: none) {
-  .create-dialog__publish-button {
-    padding-right: $publish-open-padding;
-    background-color: var(--color-primary-orange);
-  }
-
-  .create-dialog__publish-icon {
-    opacity: 1;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .create-dialog__publish-button {
-    transition:
-      background-color 0.3s ease-out,
-      transform 0.1s ease;
-  }
-
-  .create-dialog__publish-icon {
-    transition: none;
-  }
 }
 
 @media (prefers-reduced-motion: no-preference) {

@@ -1,0 +1,77 @@
+$padding-block: 12px;
+$padding-inline: 16px;
+$icon-gap: 10px;
+
+@mixin primary-open {
+  padding-right: calc(#{$padding-inline} + #{$icon-gap} + var(--button-icon-width));
+  background-color: var(--color-primary-orange);
+
+  .button-primary__icon {
+    opacity: 1;
+  }
+}
+
+.button-primary {
+  --button-icon-width: 24px;
+  display: inline-flex;
+  align-items: center;
+  padding: $padding-block $padding-inline;
+  border: 0;
+  border-radius: 10px;
+  background-color: var(--color-secondary-orange);
+  color: var(--color-ink);
+  font-family: var(--font-button);
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  overflow: hidden;
+  transition:
+    background-color 0.3s ease-out,
+    padding-right 0.3s ease-out,
+    transform 0.1s ease;
+}
+
+.button-primary:active:not(:disabled) {
+  transform: scale(0.97);
+}
+
+.button-primary__label {
+  position: relative;
+}
+
+.button-primary__icon {
+  position: absolute;
+  top: 50%;
+  left: calc(100% + #{$icon-gap});
+  translate: 0 -50%;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+.button-primary--open {
+  @include primary-open;
+}
+
+@media (hover: hover) {
+  .button-primary:hover:not(:disabled) {
+    @include primary-open;
+  }
+}
+
+@media (hover: none) {
+  .button-primary {
+    @include primary-open;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .button-primary {
+    transition:
+      background-color 0.3s ease-out,
+      transform 0.1s ease;
+  }
+
+  .button-primary__icon {
+    transition: none;
+  }
+}
