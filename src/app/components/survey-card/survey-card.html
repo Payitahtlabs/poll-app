@@ -1,6 +1,6 @@
 <article class="survey-card">
   <p class="survey-card__category">{{ survey().category }}</p>
-  <h3 class="survey-card__title">
+  <h3 class="survey-card__title user-text">
     <a class="survey-card__link" [routerLink]="['/survey', survey().id]">{{ survey().title }}</a>
   </h3>
   <p class="survey-card__deadline">{{ survey().end_date | deadlineLabel }}</p>

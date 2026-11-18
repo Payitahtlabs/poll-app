@@ -1,6 +1,6 @@
 <h2 class="survey-question__title">
   <span class="survey-question__number">{{ question().position }}.</span>
-  <span>{{ question().text }}</span>
+  <span class="user-text">{{ question().text }}</span>
 </h2>
 @if (question().allow_multiple) {
   <p class="survey-question__hint">More than one answer is possible.</p>
@@ -28,7 +28,7 @@
         </span>
         <span class="survey-question__label">
           <span class="survey-question__letter">{{ option.position | answerLetter }}.</span>
-          <span>{{ option.text }}</span>
+          <span class="user-text">{{ option.text }}</span>
         </span>
       </label>
     </li>

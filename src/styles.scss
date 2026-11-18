@@ -118,3 +118,7 @@ body:has(dialog[open]) {
 body:has(app-survey-detail) {
   background-color: var(--color-white);
 }
+
+.user-text {
+  overflow-wrap: anywhere;
+}

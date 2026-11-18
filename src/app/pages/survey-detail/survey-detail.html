@@ -13,9 +13,9 @@
         <span>{{ survey.end_date | deadlineDate }}</span>
         <span class="survey-detail__category">Category: {{ survey.category }}</span>
       </p>
-      <h1 class="survey-detail__title">{{ survey.title }}</h1>
+      <h1 class="survey-detail__title user-text">{{ survey.title }}</h1>
       @if (survey.description; as description) {
-        <p class="survey-detail__description">{{ description }}</p>
+        <p class="survey-detail__description user-text">{{ description }}</p>
       }
       <ol class="survey-detail__questions" role="list">
         @for (question of questions(); track question.id) {

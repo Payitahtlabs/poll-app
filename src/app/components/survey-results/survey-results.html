@@ -24,7 +24,7 @@
         <li>
           <h3 class="survey-results__question">
             <span class="survey-results__number">{{ question.position }}.</span>
-            <span>{{ question.text }}</span>
+            <span class="user-text">{{ question.text }}</span>
           </h3>
           <ul class="survey-results__answers" role="list">
             @for (answer of question.answers; track answer.id) {
