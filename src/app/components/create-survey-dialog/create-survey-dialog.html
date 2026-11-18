@@ -4,7 +4,7 @@
       <p class="create-dialog__badge">Draft</p>
       <h2 class="create-dialog__title" id="create-dialog-title">Create new survey</h2>
       <button
-        class="create-dialog__cancel"
+        class="button-secondary create-dialog__cancel"
         type="button"
         aria-label="Cancel"
         (click)="closeDialog()"
@@ -111,7 +111,7 @@
         }
         <div class="create-form__add-question">
           <button
-            class="create-form__add-question-button"
+            class="button-secondary"
             type="button"
             [disabled]="isQuestionLimitReached()"
             (click)="addQuestion()"

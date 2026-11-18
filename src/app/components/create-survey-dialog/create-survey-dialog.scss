@@ -81,27 +81,11 @@ $publish-gap: 48px;
 
 .create-dialog__cancel {
   grid-area: cancel;
-  display: flex;
-  align-items: center;
   justify-content: center;
   width: 39px;
   height: 32px;
   padding: 0;
-  border: 0;
-  border-radius: 10px;
-  background-color: var(--color-complete-soft);
   color: var(--color-white);
-  font-family: var(--font-button);
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition:
-    background-color 0.3s ease-out,
-    transform 0.1s ease;
-}
-
-.create-dialog__cancel:active {
-  transform: scale(0.97);
 }
 
 .create-dialog__cancel-label {
@@ -192,24 +176,10 @@ $publish-gap: 48px;
   margin-top: $add-question-gap;
 }
 
-.create-form__add-question-button {
-  @include form.action-button;
-
-  gap: 10px;
-  border-radius: 10px;
-  background-color: var(--color-complete-soft);
-}
-
 .create-form__limit {
   margin: 0;
   color: var(--color-field);
   font-size: 14px;
-}
-
-@media (hover: hover) {
-  .create-form__add-question-button:hover:not(:disabled) {
-    background-color: var(--color-complete-soft-hover);
-  }
 }
 
 .create-dialog__publish {
@@ -261,12 +231,6 @@ $publish-gap: 48px;
   }
 }
 
-@media (hover: hover) {
-  .create-dialog__cancel:hover {
-    background-color: var(--color-complete-soft-hover);
-  }
-}
-
 @media (min-width: 1024px) {
   .create-dialog {
     padding: var(--page-gutter);
@@ -292,7 +256,6 @@ $publish-gap: 48px;
   }
 
   .create-dialog__cancel {
-    gap: 10px;
     width: auto;
     height: auto;
     padding: 8px 12px;
