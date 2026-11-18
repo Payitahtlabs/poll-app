@@ -148,7 +148,7 @@ export class Surveys implements OnDestroy {
    * @param survey - The survey with its new values.
    */
   private replaceSurvey(survey: Survey): void {
-    this.surveyList.update((list) => list.map((item) => (item.id === survey.id ? survey : item)));
+    this.surveyList.update((list) => replaceById(list, survey));
   }
 
   /**
