@@ -127,6 +127,9 @@ export class Surveys implements OnDestroy {
       .on('postgres_changes', { event: 'UPDATE', ...SURVEYS_TABLE }, (payload) =>
         this.replaceSurvey(payload.new as Survey),
       )
+      .on('postgres_changes', { event: 'DELETE', ...SURVEYS_TABLE }, (payload) =>
+        this.removeSurvey(payload.old as Pick<Survey, 'id'>),
+      )
       .on('postgres_changes', { event: 'UPDATE', ...ANSWER_OPTIONS_TABLE }, (payload) =>
         this.replaceAnswerOption(payload.new as AnswerOption),
       )
@@ -141,6 +144,14 @@ export class Surveys implements OnDestroy {
     this.surveyList.update((list) =>
       list.some((item) => item.id === survey.id) ? list : [survey, ...list],
     );
+  }
+
+  /**
+   * Takes a deleted survey out of the list so no one opens a survey that is gone.
+   * @param survey - The deleted survey; the database only sends its id.
+   */
+  private removeSurvey(survey: Pick<Survey, 'id'>): void {
+    this.surveyList.update((list) => list.filter((item) => item.id !== survey.id));
   }
 
   /**
