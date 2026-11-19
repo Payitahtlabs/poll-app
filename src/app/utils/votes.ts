@@ -44,3 +44,21 @@ export function toQuestionResult(question: QuestionWithOptions): QuestionResult 
     })),
   };
 }
+
+/**
+ * Adds the answers a visitor has chosen but not sent yet, so the results preview their vote.
+ * @param questions - The questions with the votes stored in the database.
+ * @param selectedIds - The ids of the chosen answers.
+ * @returns The questions with one more vote on every chosen answer.
+ */
+export function addSelectedVotes(
+  questions: QuestionWithOptions[],
+  selectedIds: number[],
+): QuestionWithOptions[] {
+  return questions.map((question) => ({
+    ...question,
+    answer_options: question.answer_options.map((option) =>
+      selectedIds.includes(option.id) ? { ...option, votes: option.votes + 1 } : option,
+    ),
+  }));
+}

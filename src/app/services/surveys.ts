@@ -56,14 +56,20 @@ export class Surveys implements OnDestroy {
   async openSurvey(surveyId: number): Promise<void> {
     this.questionList.set([]);
     this.questionsLoadFinished.set(false);
-    const { data } = await this.supabase
-      .from('questions')
-      .select('*, answer_options(*)')
-      .eq('survey_id', surveyId)
-      .order('position')
-      .order('position', { referencedTable: 'answer_options' });
-    this.questionList.set((data ?? []) as QuestionWithOptions[]);
+    this.questionList.set(await this.fetchQuestions(surveyId));
     this.questionsLoadFinished.set(true);
+  }
+
+  /**
+   * Loads the votes of the open survey again without clearing what is shown in the meantime.
+   * @param surveyId - The id of the survey that was voted on.
+   */
+  async refreshQuestions(surveyId: number): Promise<void> {
+    const questions = await this.fetchQuestions(surveyId);
+    const isStillOpen = this.questionList().some((question) => question.survey_id === surveyId);
+    if (isStillOpen) {
+      this.questionList.set(questions);
+    }
   }
 
   /**
@@ -95,6 +101,21 @@ export class Surveys implements OnDestroy {
     }
     await this.loadSurvey(data as number);
     return data as number;
+  }
+
+  /**
+   * Fetches the questions of one survey with their answer options, both in their set order.
+   * @param surveyId - The id of the survey.
+   * @returns The questions with their answers, or an empty list when nothing came back.
+   */
+  private async fetchQuestions(surveyId: number): Promise<QuestionWithOptions[]> {
+    const { data } = await this.supabase
+      .from('questions')
+      .select('*, answer_options(*)')
+      .eq('survey_id', surveyId)
+      .order('position')
+      .order('position', { referencedTable: 'answer_options' });
+    return (data ?? []) as QuestionWithOptions[];
   }
 
   /** Loads all surveys from the database, newest first. */

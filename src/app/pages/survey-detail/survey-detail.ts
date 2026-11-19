@@ -18,6 +18,7 @@ import { hasEnded } from '../../utils/date';
 import { getUnansweredPositions, toggleAnswer } from '../../utils/selection';
 import { describeUnanswered } from '../../utils/text';
 import { readVote, saveVote } from '../../utils/vote-storage';
+import { addSelectedVotes } from '../../utils/votes';
 
 const THANKS_MESSAGE = 'Thanks, your vote was counted.';
 const SEND_FAILED_MESSAGE = 'Your vote could not be sent. Please try again.';
@@ -48,6 +49,11 @@ export class SurveyDetail {
   });
   readonly isLocked = computed(() => !this.isRunning() || this.hasVoted());
   readonly isCompleteDisabled = computed(() => this.isLocked() || this.isSending());
+  readonly resultQuestions = computed(() =>
+    this.isLocked()
+      ? this.questions()
+      : addSelectedVotes(this.questions(), this.selectedOptionIds()),
+  );
 
   /** Opens the survey named in the address again whenever the address names another one. */
   constructor() {
@@ -96,10 +102,11 @@ export class SurveyDetail {
   private async sendVote(): Promise<void> {
     this.isSending.set(true);
     const isCounted = await this.surveysService.submitVotes(this.selectedOptionIds());
-    this.isSending.set(false);
     if (isCounted) {
       saveVote(this.id(), this.selectedOptionIds());
+      await this.surveysService.refreshQuestions(this.id());
     }
+    this.isSending.set(false);
     this.hasVoted.set(isCounted);
     this.feedback.set(isCounted ? THANKS_MESSAGE : SEND_FAILED_MESSAGE);
   }

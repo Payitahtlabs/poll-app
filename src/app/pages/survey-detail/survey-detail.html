@@ -50,7 +50,7 @@
       <p class="survey-detail__feedback" role="status">{{ feedback() }}</p>
     </article>
     @if (hasLoadedQuestions()) {
-      <app-survey-results [questions]="questions()" />
+      <app-survey-results [questions]="resultQuestions()" />
     }
   </div>
 }
